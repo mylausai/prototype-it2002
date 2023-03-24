@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { createUser } from './api';
 import { useNavigate, Link } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
-import './index.css'
-function CreateAccountPage(props) {
+
+function CreateAccountPage(props: any) {
   const [name, setName] = useState('')
   const [contact, setContact] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     const success = await createUser({name, contact, email, password}, props.userType);
     if (success) {
@@ -19,8 +19,8 @@ function CreateAccountPage(props) {
   };
 
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <div className="bg-dark">
+      <nav className="navbar navbar-expand-lg navbar-dark">
         <div className="container">
           <Link to="/" className="navbar-brand">Home</Link>
         </div>

@@ -3,19 +3,29 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './searchcar.css'
 
+interface Car {
+  make_model: string;
+  seat_capacity: number
+  pickup_location: string;
+  rental_rate: number;
+}
+
 function SearchCar() {
   const [pickupLocation, setPickupLocation] = useState('');
   const [seatCapacity, setSeatCapacity] = useState('1');
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState([{make_model:'',
+                                                      seat_capacity:0,
+                                                      pickup_location:'',
+                                                      rental_rate:0}]);
   const navigate = useNavigate();
 
-  const handleSearch = async (event) => {
+  const handleSearch = async (event: any) => {
     event.preventDefault();
-    const results = await searchCars(pickupLocation, seatCapacity); 
+    const results = await searchCars(pickupLocation, seatCapacity) as Car[]; 
     setSearchResults(results);
   }
 
-  const handleChoose = (car) => {
+  const handleChoose = (car: any) => {
     // Save the chosen car information to the redirected page
     navigate(`/car/${car.id}`, { state:car });
   }

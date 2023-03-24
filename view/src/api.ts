@@ -1,10 +1,16 @@
 import apisauce from 'apisauce'
  
-const machineIP = "127.0.0.1" //to change
+const machineIP = "172.25.77.206" //to change
 const machinePort = "2222"
 const api = apisauce.create({
   baseURL: `http://${machineIP}:${machinePort}`,
 })
+
+interface LoginResponse {
+  success: boolean;
+  owner?: any;
+  customer?: any;
+}
 
 export async function login(email: string, password: string, userType: string) {
   // Construct the data to be sent to the server
@@ -18,7 +24,7 @@ export async function login(email: string, password: string, userType: string) {
   if (res.ok) {
       // Authentication succeeded
       console.log("Authentication succeeded!");
-      const { success, owner, customer } = res.data
+      const { success, owner, customer } = res.data as LoginResponse
       if (owner) {
         alert('Logged in as owner')
         return owner
@@ -45,20 +51,6 @@ export async function createUser(accountData: any, userType: string) {
     return false;
   }
 }
-  
-export async function getUsers(email, password) {
-    const response = await fetch('http://127.0.0.1:5173/api/users', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-      //body: JSON.stringify({ email, password })
-    });
-    if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(errorMessage);
-    }
-    const users = await response.json();
-    return users;
-} 
 
 export async function searchCars(pickupLocation: string, seatCapacity: string) {
   const res = await api.post('/api/cars', {pickupLocation, seatCapacity});

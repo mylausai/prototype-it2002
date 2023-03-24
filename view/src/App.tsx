@@ -5,17 +5,17 @@ import React from 'react'
 import { Link, Routes, Route } from 'react-router-dom'
 import Home from './Home'
 import LoginPage from './LoginPage'
-import About from './About'
 import CreateAccountPage from './CreateAccountPage'
-import UserList from './UserList'
 import SearchCar from './SearchCar'
 import ChosenCar from './ChosenCar'
 import HomePage from './HomePage'
 import PostCar from './PostCar'
 import OrderHistory from './OrderHistory'
+import { ChakraProvider } from '@chakra-ui/react'
 
 function App() {
   return (
+    <ChakraProvider>
     <div>
       <Routes>
         <Route path="/" element={<HomePage />}>
@@ -28,13 +28,9 @@ function App() {
         </Route>
         <Route path="/home/owner" element={<Home userType="owner"/>}>
         </Route>
-        <Route path="/about" element={<About />}>
-        </Route>
         <Route path="/create/customer" element={<CreateAccountPage userType="customer"/>}>
         </Route>
         <Route path="/create/owner" element={<CreateAccountPage userType="owner"/>}>
-        </Route>
-        <Route path="/users" element={<UserList />}>
         </Route>
         <Route path="/searchcar" element={<SearchCar />}>
         </Route>
@@ -48,6 +44,7 @@ function App() {
         </Route>
       </Routes>
     </div>
+    </ChakraProvider>
   )
 }
 export default App;

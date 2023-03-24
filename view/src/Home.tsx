@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './index.css';
 
-function Home(props) {
-  const [user, setUser] = useState(null);
+function Home(props: any) {
+  const [user, setUser] = useState({name: ''});
   useEffect(() => {
     const userString = localStorage.getItem('user'); // Retrieve user from local storage
     if (userString) {
@@ -37,7 +37,7 @@ function Home(props) {
       </nav>
       <div style={{ textAlign: 'center' }}>
       <h2>Home</h2>
-      <p>Welcome, {user ? user.name : 'Guest'}!</p>
+      <p>Welcome, {user.name}!</p>
       </div>
     </div>
   );

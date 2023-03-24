@@ -2,34 +2,45 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getCars, postCar } from './api'
 
+interface Car {
+  make_model: string;
+  seat_capacity: number;
+  pickup_location: string;
+  rental_rate: number
+}
+
 function PostCar() {
   const [makeModel, setMakeModel] = useState('');
-  const [seatCapacity, setSeatCapacity] = useState('1');
+  const [seatCapacity, setSeatCapacity] = useState(1);
   const [pickupLocation, setPickupLocation] = useState('');
-  const [rentalRate, setRentalRate] = useState('');
-  const [cars, setCars] = useState([]);
-  const [user, setUser] = useState(null);
+  const [rentalRate, setRentalRate] = useState(0);
+  const [cars, setCars] = useState<Car[]>([]);
+  const [user, setUser] = useState({owner_id:''});
   useEffect(() => {
     const userString = localStorage.getItem('user'); // Retrieve user from local storage
     if (userString) {
       const user = JSON.parse(userString);
-      console.log('PostCarPage: ', user)
+      console.log('postcar: ', user) // ok
       setUser(user);
     }
   }, []);
 
   useEffect(() => {
     async function fetchCars() {
-        if (user) {
-            const cars = await getCars(user.owner_id); // cars posted by owner
-            setCars(cars);
-            console.log('posted cars: ', cars)
+      console.log('logged in owner id: ', user.owner_id)
+      if (user.owner_id){
+        const cars = await getCars(user.owner_id); // cars posted by owner
+        if (cars) {
+          console.log('cars results: ', cars)
+          console.log('unparsed: ', Object.values(cars))
+          setCars(Object.values(cars) as Car[]); // converts object into array
         }
+      }
     }
     fetchCars();
   }, [user]); // add user as dependency
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     const owner_id = user.owner_id;
     const carData = { makeModel, seatCapacity, pickupLocation, rentalRate, owner_id};
@@ -37,8 +48,12 @@ function PostCar() {
     if (res) {
       setMakeModel('');
       setPickupLocation('');
-      setRentalRate('');
-      setCars([...cars, res.data]);
+      setRentalRate(0);
+      const newCar: Car = {make_model: makeModel,
+                          seat_capacity: seatCapacity,
+                          pickup_location: pickupLocation,
+                          rental_rate: rentalRate};
+      setCars((cars: Car[])=>[...cars, newCar]);
     } else {
       alert('Failed to post car.');
     }
@@ -62,13 +77,13 @@ function PostCar() {
         <input type="text" id="make" name="make" value={makeModel} onChange={(e) => setMakeModel(e.target.value)} />
 
         <label htmlFor="seatCapacity">Seat Capacity:</label>
-        <input type="number" id="seatCapacity" name="seatCapacity" value={seatCapacity} onChange={(e) => setSeatCapacity(e.target.value)} />
+        <input type="number" id="seatCapacity" name="seatCapacity" value={seatCapacity} onChange={(e) => setSeatCapacity(parseInt(e.target.value))} />
 
         <label htmlFor="pickup-location">Pickup Location:</label>
         <input type="text" id="pickup-location" name="pickup-location" value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} />
 
         <label htmlFor="rental-rate">Rental Rate:</label>
-        <input type="text" id="rental-rate" name="rental-rate" value={rentalRate} onChange={(e) => setRentalRate(e.target.value)} />
+        <input type="text" id="rental-rate" name="rental-rate" value={rentalRate} onChange={(e) => setRentalRate(parseInt(e.target.value))} />
 
         <button type="submit">Post Car</button>
       </form>

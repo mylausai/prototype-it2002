@@ -2,9 +2,18 @@ import { useEffect, useState } from 'react';
 import { getOrders } from './api';
 import { Link } from 'react-router-dom';
 
-function OrderHistory(props) {
-  const [orders, setOrders] = useState([]);
-  const [user, setUser] = useState(null);
+interface Order {
+  make_model: string;
+  pickup_location: string;
+  rental_days: number;
+  total_cost: number;
+  contact: string;
+}
+
+function OrderHistory(props: any) {
+
+  const [orders, setOrders] = useState<Order[]>([{make_model:'', pickup_location:'', rental_days:0, total_cost:0, contact:''}]);
+  const [user, setUser] = useState({customer_id:'', owner_id:''});
 
   useEffect(() => {
     const userString = localStorage.getItem('user'); // Retrieve user from local storage
@@ -18,10 +27,10 @@ function OrderHistory(props) {
     async function fetchOrders() {
        if (user) {
         const id = props.userType === 'customer' ? user.customer_id : user.owner_id;
-        console.log('fetchorder:', id)
         const userType = props.userType;
         const orders = await getOrders({id, userType});
-        setOrders(orders);
+        const newOrder: Order = {make_model: '', pickup_location: '', rental_days: 0, total_cost: 0, contact: ''};
+        setOrders((orders: Order[]) =>[...orders, newOrder]);
        } 
     }
     fetchOrders();
@@ -56,8 +65,8 @@ function OrderHistory(props) {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
-              <tr key={order.id}>
+            {orders.map((order, index) => (
+              <tr key={index}>
                 <td>{order.make_model}</td>
                 <td>{order.pickup_location}</td>
                 <td>{order.rental_days}</td>

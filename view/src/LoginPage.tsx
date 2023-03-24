@@ -3,13 +3,13 @@ import { login } from './api';
 import { useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Container } from 'react-bootstrap';
 
-function LoginPage(props) {
+function LoginPage(props: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     const user = await login(email, password, props.userType);
     setUser(user);

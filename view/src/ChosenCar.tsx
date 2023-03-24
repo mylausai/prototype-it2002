@@ -7,7 +7,7 @@ function ChosenCar() {
   const chosenCar = location.state;
   const [rentalDays, setRentalDays] = useState(1);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({customer_id: ''});
   const [rentalCost, setRentalCost] = useState(0);
   useEffect(() => {
     const userString = localStorage.getItem('user'); // Retrieve user from local storage
@@ -17,12 +17,12 @@ function ChosenCar() {
     }
   }, []);
 
-  const handleDaysChange = (event) => {
+  const handleDaysChange = (event: any) => {
     setRentalDays(event.target.value);
   };
 
   const handleConfirm = async () => {
-    const customer_id = user.customer_id;
+    const customer_id = user?.customer_id;
     const car_id = chosenCar.car_id;
     const rentalCost = chosenCar.rental_rate * rentalDays;
     setRentalCost(rentalCost)
