@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { login } from './api';
 import { useNavigate, Link } from 'react-router-dom';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Container } from 'react-bootstrap';
+import { Button } from "@chakra-ui/react";
+import { createUser } from './api';
 
 function LoginPage(props: any) {
+  const [name, setName] = useState('')
+  const [contact, setContact] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -20,38 +24,84 @@ function LoginPage(props: any) {
     } 
   } 
 
-  return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <ul className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to="/" className="nav-link">Home</Link>
-          </li>
-        </ul>
-      </nav>
-      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
-        <div>
-          <h1 className="text-center mb-5">Log In</h1>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </Form.Group>
+  const handleCreateAccountSubmit = async (event: any) => {
+    event.preventDefault();
+    const success = await createUser({email, password}, props.userType);
+    if (success) {
+      const user = await login(email, password, props.userType);
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        navigate("/home/"+props.userType);
+      } 
+    }
+  }
 
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </Form.Group>
-            <p></p>
-            <Button variant="primary" type="submit" className="mt-3">
-              Log In
-            </Button>
-          </Form>
-          <p className="mt-3 text-center">Don't have an account? <Link to={"/create/"+props.userType}>Create</Link></p>
+  return (
+    <Container className="home-container">
+      <div className="logincreatehome-box">
+        <h1 style={{fontSize:'1.5vw',marginBottom:'0.5vw'}}>Customer Login</h1>
+        <div className='homeButton'>
+          <Button fontSize="1.2vw"><Link to="/" className="backHome">Back to home</Link></Button>
         </div>
-      </Container>
-    </div>
+        <div className="logincreate-box">
+          <div className='login-box'>
+          <h1 style={{fontSize: '1.5vw'}}><strong>Log In</strong></h1>
+            <div className="login-area">
+              <Form onSubmit={handleSubmit}>
+                <div className='email-pass'>
+                  <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Email address:</Form.Label>
+                    <Form.Control type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className='formGroups'/>
+                  </Form.Group>
+
+                  <Form.Group controlId="formBasicPassword">
+                    <Form.Label>Password:</Form.Label>
+                    <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className='formGroups'/>
+                  </Form.Group>
+                  <p></p>
+                </div>
+                <Button color="#ffffff" backgroundColor={"#174b4d"} _hover={{bg: '#F5DEB3', color: '#000000'}} size="lg" type="submit" fontSize="1.2vw">
+                  Log In
+                </Button>
+              </Form>
+            </div>
+          </div>
+
+          <div className='create-box'>
+            <h1 style={{fontSize: '1.5vw'}}><strong>Create Account</strong></h1>
+            <div className="login-area">
+              <Form onSubmit={handleSubmit}>
+                <div className='email-pass'>
+                <Form.Group controlId="formBasicName">
+                  <Form.Label>Name:</Form.Label>
+                  <Form.Control type="text" placeholder="Enter name" value={name} onChange={(e) => setName(e.target.value)}  className='formGroups'/>
+                </Form.Group>
+
+                <Form.Group controlId="formBasicContact">
+                  <Form.Label>Contact:</Form.Label>
+                  <Form.Control type="text" placeholder="Enter contact" value={contact} onChange={(e) => setContact(e.target.value)} className='formGroups'/>
+                </Form.Group>
+
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Email address:</Form.Label>
+                  <Form.Control type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className='formGroups'/>
+                </Form.Group>
+
+                <Form.Group controlId="formBasicPassword">
+                  <Form.Label>Password:</Form.Label>
+                  <Form.Control type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} className='formGroups'/>
+                </Form.Group>
+                </div>
+                <Button color="#ffffff" backgroundColor={"#174b4d"} _hover={{bg: '#F5DEB3', color: '#000000'}} size="lg" type="submit" fontSize="1.2vw">Create Account</Button>
+              </Form>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </Container>
   );
 }
-
+// Original link to create account page
+// <p className="mt-3 text-center">Don't have an account? <Link to={"/create/"+props.userType}>Create</Link></p> 
 export default LoginPage;

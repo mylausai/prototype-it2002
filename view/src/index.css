@@ -1,32 +1,51 @@
-.home-container {
-    height: 100%;
+  .home-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     min-height: 100vh;
-    background-image: url('./images/carback.png');
+    background-image: url('./images/car-edited.jpg');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
   }
 
   .home-box {
-    position: absolute;
-    height: 60%;
-    width: 50%;
+    height: 20vw;
+    width: 45vw;
     background-color: rgba(255, 255, 255, 0.8);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
-  
+
+  .logincreatehome-box {
+    height: 35vw;
+    width: 45vw;
+    background-color: #174b4dd8;
+    color: #fdfdfd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logincreate-box {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .login-box {
+    margin-right: 1vw;
+  }
+
   .home-title {
-    font-size: 4rem;
+    font-size: 3.3vw;
     font-weight: bold;
     margin-bottom: 2rem;
+    color: #174b4d;
   }
   
   .home-subtitle {
@@ -34,8 +53,42 @@
     margin-bottom: 4rem;
   }
   
+  /* Login Page*/
+  .login-area {
+    background-color: #b0bfbfe1;
+    color: #06393b;
+    padding: 20px;
+    margin-bottom: 0.7vw;
+  }
 
+  .homeButton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 1em;
+    color: #174b4d;
+  }
+
+  .email-pass {
+    margin-bottom: 1vw;
+    text-align: left;
+    font-size: 1.2vw;
+  }
   
+  .formGroups {
+    width:15vw;
+    height:2.3vw;
+  }
+
+  form input {
+    display: block;
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 1em;
+    background-color: #36454F;
+    color: #F5DEB3;
+  }
+
   nav ul {
     list-style: none;
     display: flex;
