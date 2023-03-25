@@ -39,7 +39,9 @@ function LoginPage(props: any) {
   return (
     <Container className="home-container">
       <div className="logincreatehome-box">
-        <h1 style={{fontSize:'1.5vw',marginBottom:'0.5vw'}}>Customer Login</h1>
+        <h1 style={{fontSize:'1.5vw',marginBottom:'0.5vw'}}>
+          {props.userType === "customer" ? "Customer Login" : "Car Owner Login"}
+        </h1>
         <div className='homeButton'>
           <Button fontSize="1.2vw"><Link to="/" className="backHome">Back to home</Link></Button>
         </div>
