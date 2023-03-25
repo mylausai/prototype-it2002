@@ -31,7 +31,6 @@ function HomePage() {
         </Col>
       </Row>
       </div>
-      <div><p>hi</p></div>
     </Container>
   );
 }

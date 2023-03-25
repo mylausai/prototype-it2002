@@ -13,14 +13,13 @@ function PostCar() {
   const [makeModel, setMakeModel] = useState('');
   const [seatCapacity, setSeatCapacity] = useState(1);
   const [pickupLocation, setPickupLocation] = useState('');
-  const [rentalRate, setRentalRate] = useState(0);
+  const [rentalRate, setRentalRate] = useState(''); // to be parsed into number in line 52
   const [cars, setCars] = useState<Car[]>([]);
   const [user, setUser] = useState({owner_id:''});
   useEffect(() => {
     const userString = localStorage.getItem('user'); // Retrieve user from local storage
     if (userString) {
       const user = JSON.parse(userString);
-      console.log('postcar: ', user) // ok
       setUser(user);
     }
   }, []);
@@ -30,9 +29,7 @@ function PostCar() {
       console.log('logged in owner id: ', user.owner_id)
       if (user.owner_id){
         const cars = await getCars(user.owner_id); // cars posted by owner
-        if (cars) {
-          console.log('cars results: ', cars)
-          console.log('unparsed: ', Object.values(cars))
+        if (cars) { // make sure it is not empty
           setCars(Object.values(cars) as Car[]); // converts object into array
         }
       }
@@ -46,13 +43,14 @@ function PostCar() {
     const carData = { makeModel, seatCapacity, pickupLocation, rentalRate, owner_id};
     const res = await postCar(carData);
     if (res) {
+      // clear the form
       setMakeModel('');
       setPickupLocation('');
-      setRentalRate(0);
+      setRentalRate('');
       const newCar: Car = {make_model: makeModel,
                           seat_capacity: seatCapacity,
                           pickup_location: pickupLocation,
-                          rental_rate: rentalRate};
+                          rental_rate: Number(rentalRate)};
       setCars((cars: Car[])=>[...cars, newCar]);
     } else {
       alert('Failed to post car.');
@@ -83,7 +81,7 @@ function PostCar() {
         <input type="text" id="pickup-location" name="pickup-location" value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} />
 
         <label htmlFor="rental-rate">Rental Rate:</label>
-        <input type="text" id="rental-rate" name="rental-rate" value={rentalRate} onChange={(e) => setRentalRate(parseInt(e.target.value))} />
+        <input type="text" id="rental-rate" name="rental-rate" value={rentalRate} onChange={(e) => setRentalRate(e.target.value)} />
 
         <button type="submit">Post Car</button>
       </form>

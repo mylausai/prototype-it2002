@@ -203,7 +203,7 @@ def create_app():
    return app
 
 # The port where the debuggable DB management API is served
-PORT = 2223
+PORT = 2222
 
 # Running the Flask app on the localhost/0.0.0.0, port 2223
 if __name__ == "__main__":
