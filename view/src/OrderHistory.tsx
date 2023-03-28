@@ -12,7 +12,7 @@ interface Order {
 
 function OrderHistory(props: any) {
 
-  const [orders, setOrders] = useState<Order[]>([{make_model:'', pickup_location:'', rental_days:0, total_cost:0, contact:''}]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [user, setUser] = useState({customer_id:'', owner_id:''});
 
   useEffect(() => {
@@ -25,16 +25,19 @@ function OrderHistory(props: any) {
 
   useEffect(() => {
     async function fetchOrders() {
-       if (user) {
-        const id = props.userType === 'customer' ? user.customer_id : user.owner_id;
-        const userType = props.userType;
-        const orders = await getOrders({id, userType});
-        const newOrder: Order = {make_model: '', pickup_location: '', rental_days: 0, total_cost: 0, contact: ''};
-        setOrders((orders: Order[]) =>[...orders, newOrder]);
+       if (user.customer_id || user.owner_id) { // only fetch order history with id present
+        const user_id = props.userType === 'customer' ? user.customer_id : user.owner_id;
+        console.log('getorder userid: ', user_id)
+        const user_type = props.userType;
+        console.log('getorder: ', user_type)
+        const orders = await getOrders(user_id, user_type) as Record<string, Order>;
+        //const newOrder: Order = {make_model: '', pickup_location: '', rental_days: 0, total_cost: 0, contact: ''};
+        //setOrders((orders: Order[]) =>[...orders, newOrder]);
+        setOrders(Object.values(orders));
        } 
     }
     fetchOrders();
-  }, [props.userType, user]);
+  }, [user]); // check again
 
   return (
     <div>
