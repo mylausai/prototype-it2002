@@ -83,7 +83,8 @@ export async function postCar(carData: any) {
   }
 }
 
-export async function rentCar(rentinfo: any) {
+export async function rentCar(customer_id: any, car_id: any, rentalDays: any, rentalCost: any) {
+  const rentinfo = {customer_id, car_id, rentalDays, rentalCost};
   const res = await api.post('/api/rentcar', rentinfo);
   if (res.ok) {
     alert("Car rented successfully");
@@ -94,8 +95,9 @@ export async function rentCar(rentinfo: any) {
   }
 }
 
-export async function getOrders(orderinfo: any) {
-  const res = await api.post('/api/getorders', orderinfo );
+export async function getOrders(user_id:any, user_type: any) {
+  const userorder = {user_id, user_type};
+  const res = await api.post('/api/getorders',  userorder);
   if (res.ok) {
     return res.data;
   } else {
