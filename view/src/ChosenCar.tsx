@@ -9,6 +9,7 @@ function ChosenCar() {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [user, setUser] = useState({customer_id: ''});
   const [rentalCost, setRentalCost] = useState(0);
+
   useEffect(() => {
     const userString = localStorage.getItem('user'); // Retrieve user from local storage
     if (userString) {
@@ -22,12 +23,14 @@ function ChosenCar() {
   };
 
   const handleConfirm = async () => {
-    const customer_id = user?.customer_id;
+    
+    const customer_id = user.customer_id;
+    console.log('chosen car customerid: ', customer_id)
     const car_id = chosenCar.car_id;
     const rentalCost = chosenCar.rental_rate * rentalDays;
     setRentalCost(rentalCost)
-    const res = await rentCar({customer_id, car_id, rentalDays, rentalCost})
-    setIsConfirmed(true);
+    const res = await rentCar(customer_id, car_id, rentalDays, rentalCost)
+    if(res) setIsConfirmed(true); // to be fixed (wait for res ok)
   };
 
   return (
