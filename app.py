@@ -7,9 +7,9 @@ CORS(app)
 
 # db connection here
 YOUR_POSTGRES_PASSWORD = "postgres"
-connection_string = f"postgresql://postgres:{YOUR_POSTGRES_PASSWORD}@localhost/postgres"
+connection_string = f"postgresql://postgres:{YOUR_POSTGRES_PASSWORD}@localhost:8001/postgres"
 engine = sqlalchemy.create_engine(
-    "postgresql://postgres:postgres@localhost/postgres"
+    connection_string
 )
 
 db = engine.connect()
@@ -205,11 +205,7 @@ def create_app():
 # The port where the debuggable DB management API is served
 PORT = 2222
 
-# Running the Flask app on the localhost/0.0.0.0, port 2223
+# Running the Flask app on the localhost/0.0.0.0, port 2222
 if __name__ == "__main__":
     app.run("0.0.0.0", PORT)
 
-    # Alternatively, you can use Waitress to run the application instead of Flask's development server
-    # You can do this by uncommenting the following lines and commenting out the previous line:
-    # from waitress import serve
-    # serve(app, host="0.0.0.0", port=PORT)

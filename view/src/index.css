@@ -5,15 +5,15 @@
     align-items: center;
     text-align: center;
     min-height: 100vh;
-    background-image: url('./images/car-edited.jpg');
-    background-repeat: no-repeat;
+    background-image: url('./images/figma_bg_dark.png');
     background-position: center center;
     background-size: cover;
+    background-color: #174b4d;
   }
 
   .home-box {
-    height: 20vw;
-    width: 45vw;
+    height: 22vw;
+    width: 55vw;
     background-color: rgba(255, 255, 255, 0.8);
     display: flex;
     flex-direction: column;
@@ -22,14 +22,15 @@
   }
 
   .logincreatehome-box {
-    height: 35vw;
-    width: 45vw;
-    background-color: #174b4dd8;
-    color: #fdfdfd;
+    min-height: 38vw;
+    min-width: 45vw;
+    background-color: #8381815f;
+    color: #eeebe5;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 2% 2%;
   }
 
   .logincreate-box {
@@ -39,12 +40,23 @@
 
   .login-box {
     margin-right: 1vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 20vw;
+  }
+
+  .create-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 20vw;
   }
 
   .home-title {
     font-size: 3.3vw;
     font-weight: bold;
-    margin-bottom: 2rem;
+    margin-bottom: 1.2vw;
     color: #174b4d;
   }
   
@@ -54,18 +66,47 @@
   }
   
   /* Login Page*/
+  .login-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    background-image: url('./images/figma_bg_dark.png');
+    background-position: center center;
+    background-size: cover;
+    background-color: #174b4d;
+  }
+
+  .logintext {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 33%;
+    color: #eeebe5;
+  }
+
   .login-area {
     background-color: #b0bfbfe1;
     color: #06393b;
-    padding: 20px;
-    margin-bottom: 0.7vw;
+    padding-top: 1.2vw;
+    padding-left: 1.8vw;
+    padding-right: 1.8vw;
+    margin-top: 0.5vw;
+  }
+
+  .login-box {
+    margin-right: 2.3vw;
   }
 
   .homeButton {
     position: absolute;
     top: 0;
     left: 0;
-    margin: 1em;
+    margin-left: 1vw;
+    margin-top: 1vw;
     color: #174b4d;
   }
 

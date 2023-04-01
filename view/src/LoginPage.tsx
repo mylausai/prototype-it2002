@@ -4,6 +4,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Form, Container } from 'react-bootstrap';
 import { Button } from "@chakra-ui/react";
 import { createUser } from './api';
+import { AiFillCar, AiFillHome } from "react-icons/ai";
+import { TbMan } from "react-icons/tb";
+import { Icon } from '@chakra-ui/react'
 
 function LoginPage(props: any) {
   const [name, setName] = useState('')
@@ -37,17 +40,24 @@ function LoginPage(props: any) {
   }
 
   return (
-    <Container className="home-container">
+    <Container className="login-container">
+      <div className='homeButton'>
+          <Button leftIcon={<AiFillHome/>} w="15vw" h="3.3vw" fontSize="1.3vw"><Link to="/" className="backHome">Back to Home</Link></Button>
+      </div>
+      <div className="logintext">
+          <h1 style={{fontSize:'3vw'}}>
+            {props.userType === "customer" ? (
+              <Icon as={TbMan} />
+            ) : (
+              <Icon as={AiFillCar} />
+            )}
+            {props.userType === "customer" ? " Customer Login" : " Car Owner Login"}
+          </h1>
+      </div>
       <div className="logincreatehome-box">
-        <h1 style={{fontSize:'1.5vw',marginBottom:'0.5vw'}}>
-          {props.userType === "customer" ? "Customer Login" : "Car Owner Login"}
-        </h1>
-        <div className='homeButton'>
-          <Button fontSize="1.2vw"><Link to="/" className="backHome">Back to home</Link></Button>
-        </div>
         <div className="logincreate-box">
           <div className='login-box'>
-          <h1 style={{fontSize: '1.5vw'}}><strong>Log In</strong></h1>
+            <h1 style={{fontSize: '1.5vw'}}>Log In</h1>
             <div className="login-area">
               <Form onSubmit={handleSubmit}>
                 <div className='email-pass'>
@@ -62,7 +72,7 @@ function LoginPage(props: any) {
                   </Form.Group>
                   <p></p>
                 </div>
-                <Button color="#ffffff" backgroundColor={"#174b4d"} _hover={{bg: '#F5DEB3', color: '#000000'}} size="lg" type="submit" fontSize="1.2vw">
+                <Button color="#ffffff" backgroundColor={"#174b4d"} _hover={{bg: '#F5DEB3', color: '#000000'}} height="4vw" width="9vw" type="submit" fontSize="1.5vw">
                   Log In
                 </Button>
               </Form>
@@ -70,7 +80,7 @@ function LoginPage(props: any) {
           </div>
 
           <div className='create-box'>
-            <h1 style={{fontSize: '1.5vw'}}><strong>Create Account</strong></h1>
+            <h1 style={{fontSize: '1.5vw'}}>Create Account</h1>
             <div className="login-area">
               <Form onSubmit={handleSubmit}>
                 <div className='email-pass'>
@@ -94,12 +104,11 @@ function LoginPage(props: any) {
                   <Form.Control type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} className='formGroups'/>
                 </Form.Group>
                 </div>
-                <Button color="#ffffff" backgroundColor={"#174b4d"} _hover={{bg: '#F5DEB3', color: '#000000'}} size="lg" type="submit" fontSize="1.2vw">Create Account</Button>
+                <Button color="#ffffff" backgroundColor={"#174b4d"} _hover={{bg: '#F5DEB3', color: '#000000'}} height="4vw" width="12vw" type="submit" fontSize="1.5vw">Create Account</Button>
               </Form>
             </div>
           </div>
         </div>
-        
       </div>
     </Container>
   );

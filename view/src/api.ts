@@ -1,6 +1,6 @@
 import apisauce from 'apisauce'
  
-const machineIP = "172.25.77.206" //to change
+const machineIP = "127.0.0.1" 
 const machinePort = "2222"
 const api = apisauce.create({
   baseURL: `http://${machineIP}:${machinePort}`,
