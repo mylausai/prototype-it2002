@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createUser } from './api';
 import { useNavigate, Link } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Container } from 'react-bootstrap';
 
 function CreateAccountPage(props: any) {
   const [name, setName] = useState('')
@@ -12,6 +12,7 @@ function CreateAccountPage(props: any) {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    console.log(name, contact, email, password, props.userType);
     const success = await createUser({name, contact, email, password}, props.userType);
     if (success) {
       navigate('/'); // LoginPage
@@ -47,8 +48,7 @@ function CreateAccountPage(props: any) {
             <Form.Label>Password:</Form.Label>
             <Form.Control type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </Form.Group>
-
-          <Button variant="primary" type="submit">Create Account</Button>
+            <Button variant="primary" type="submit">Create Account</Button>
         </Form>
       </div>
     </div>

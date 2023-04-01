@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './index.css';
+import './home.css';
+import { Container } from 'react-bootstrap';
 
 function Home(props: any) {
   const [user, setUser] = useState({name: ''});
@@ -14,11 +15,11 @@ function Home(props: any) {
   }, []);
 
   return (
-    <div>
-      <nav> 
+    <Container className="signed-in-container">
+      <nav className="signed-in-nav"> 
         <ul>
-          <li>
-            <Link to="/">Sign out</Link>
+          <li  className="selected-tab">
+            <Link to={"/home/"+props.userType} className="no-cursor">Home</Link>
           </li>
           {props.userType === 'customer' && (
             <li>
@@ -33,13 +34,18 @@ function Home(props: any) {
           <li>
             <Link to={"/order/"+props.userType}>Order History</Link>
           </li>
+          <li>
+            <Link to="/">Sign out</Link>
+          </li>
         </ul>
       </nav>
-      <div style={{ textAlign: 'center' }}>
-      <h2>Home</h2>
-      <p>Welcome, {user.name}!</p>
-      </div>
-    </div>
+      <Container className="signed-in-text">
+        <div className='welcome_text'>
+          <h2>Home</h2>
+          <p>Welcome, {user.name}!</p>
+        </div>
+      </Container>
+    </Container>
   );
 }
 

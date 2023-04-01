@@ -53,14 +53,25 @@ export async function createUser(accountData: any, userType: string) {
 }
 
 export async function searchCars(pickupLocation: string, seatCapacity: string) {
-  const res = await api.post('/api/cars', {pickupLocation, seatCapacity});
+  let query = {};
+
+  if ((pickupLocation) && (seatCapacity)) {
+    query = {pickupLocation, seatCapacity}
+  } else if (seatCapacity) {
+    query = {seatCapacity}
+  } else if (pickupLocation) {
+    query = {pickupLocation}
+  }
+
+  const res = await api.post('/api/cars', query);
+
   if (res.ok) {
     return res.data;
   } else {
     alert('Error in searching cars');
     return false;
   }
-} 
+}
 
 export async function getCars(owner_id: any) {
   const res = await api.post('/api/getcars', owner_id);

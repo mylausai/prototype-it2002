@@ -10,7 +10,7 @@ import './index.css'
 
 function HomePage() {
   return (
-    <Container className="home-container">
+    <Container className="homepage-container">
       <div className="home-box">
         <Row>
           <Col>
@@ -20,12 +20,12 @@ function HomePage() {
         <Row style={{ display: "flex", justifyContent: "space-between" }}>
           <Col>
             <Link to="/login/customer">
-              <Button leftIcon={<TbMan />} color="#ffffff" backgroundColor={"#174b4d"} _hover={{bg: '#F5DEB3', color: '#000000'}} h="8vw" w="23vw" mr="1.2vw" fontSize={"3vw"}>Customer</Button>
+              <Button leftIcon={<TbMan />} color="#eeebe5" backgroundColor={"#174b4d"} _hover={{bg: '#F5DEB3', color: '#000000'}} h="8vw" w="23vw" mr="1.2vw" fontSize={"3vw"}>Customer</Button>
             </Link>
           </Col>
           <Col>
             <Link to="/login/owner">
-              <Button leftIcon={<AiFillCar />} color="#ffffff" backgroundColor={"#174b4d"} _hover={{bg: '#F5DEB3', color: '#000000'}} h="8vw" w="23vw" fontSize={"3.3vw"}>Owner</Button>
+              <Button leftIcon={<AiFillCar />} color="#eeebe5" backgroundColor={"#174b4d"} _hover={{bg: '#F5DEB3', color: '#000000'}} h="8vw" w="23vw" fontSize={"3.3vw"}>Owner</Button>
             </Link>
           </Col>
         </Row>

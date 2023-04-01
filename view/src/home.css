@@ -1,0 +1,139 @@
+.signed-in-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.signed-in-text {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-image: url('./images/figma_bg_dark.png');
+    background-color: #174b4d;
+    justify-content: center;
+}
+.welcome_text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+    color: #eeebe5;
+    font-size: 25px;
+  }
+
+.signed-in-nav {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+    align-content: center;
+    background-color: #173637;
+}
+
+.signed-in-nav ul {
+    background-color: #1e5456;
+    padding: 0;
+}
+
+.signed-in-nav li {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.signed-in-nav li a{
+    color: #eeebe5;
+    font-size: 20px;
+    font-weight: 450;
+    padding: 0.8vw 2vw;
+    transition: color 0.3s ease-in-out;
+}
+
+.signed-in-nav li a:hover{
+    background-color: #abc7c8;
+    color: #173637;
+    font-size: 20px;
+    font-weight: 450;
+    transition: color 0.3s ease-in-out;
+}
+
+a.no-cursor {
+    cursor: default;
+    background-color: #abc7c8;
+    color: #173637 !important;
+    font-size: 20px;
+    font-weight: 450;
+}
+
+
+/* Post car page */
+.post-car-area {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    width: 100%;
+    background-image: url('./images/figma_bg_dark.png');
+    background-color: #174b4d;
+}
+.post-a-car {
+    font-size: 20px;
+}
+
+.post-form {
+    color: #eeebe5;
+    margin-right: 2vw;
+    margin-left: 10vw;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+
+   opacity: 1;
+
+}
+
+.postcar-button-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.postcar-button {
+    background-color: #abc7c8;
+    color: #173637;
+}
+
+.postcar-table {
+    margin-top: 1vw;
+}
+
+.post-database {
+    display: flex;
+    color: #eeebe5;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+
+
+.postcar-db-columns th{
+    font-size: 18px;
+    font-weight: 400;
+    background-color: #abc7c8;
+    color: #173637;
+    padding: 1vw;
+}
+
+.postcar-db-rows td{
+    font-size: 18px;
+    font-weight: 350;
+    background-color: #174b4dcf;
+    color: #eeebe5;
+    border-color: #1c2525;
+    padding: 1vw;
+}

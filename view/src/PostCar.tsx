@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getCars, postCar } from './api'
+import { Container } from 'react-bootstrap';
+import { Button } from "@chakra-ui/react";
+import './home.css';
 
 interface Car {
   make_model: string;
@@ -11,7 +14,7 @@ interface Car {
 
 function PostCar() {
   const [makeModel, setMakeModel] = useState('');
-  const [seatCapacity, setSeatCapacity] = useState(1);
+  const [seatCapacity, setSeatCapacity] = useState(5); 
   const [pickupLocation, setPickupLocation] = useState('');
   const [rentalRate, setRentalRate] = useState(''); // to be parsed into number in line 52
   const [cars, setCars] = useState<Car[]>([]);
@@ -58,59 +61,72 @@ function PostCar() {
   };
 
   return (
-    <div>
-      <nav>
+    <Container className="signed-in-container">
+      <nav className="signed-in-nav">
         <ul>
-          <li>
-            <Link to="/">Sign out</Link>
-          </li>
           <li>
             <Link to="/home/owner">Home</Link>
           </li>
+          <li  className="selected-tab">
+            <Link to="/postcar" className="no-cursor">Post Car</Link>
+          </li>
+          <li>
+            <Link to={"/order/owner"}>Order History</Link>
+          </li>
+          <li>
+            <Link to="/">Sign out</Link>
+          </li>
         </ul>
       </nav>    
-      <h2>Post a Car</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="make">Make:</label>
-        <input type="text" id="make" name="make" value={makeModel} onChange={(e) => setMakeModel(e.target.value)} />
+      <Container className='post-car-area'>
+        <Container className='post-form'>
+          <h2 className='post-a-car'>Post a Car</h2>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="make">Make:</label>
+            <input type="text" id="make" name="make" value={makeModel} onChange={(e) => setMakeModel(e.target.value)} />
 
-        <label htmlFor="seatCapacity">Seat Capacity:</label>
-        <input type="number" id="seatCapacity" name="seatCapacity" value={seatCapacity} onChange={(e) => setSeatCapacity(parseInt(e.target.value))} />
+            <label htmlFor="seatCapacity">Seat Capacity:</label>
+            <input type="number" id="seatCapacity" name="seatCapacity" value={seatCapacity} onChange={(e) => setSeatCapacity(parseInt(e.target.value))} />
 
-        <label htmlFor="pickup-location">Pickup Location:</label>
-        <input type="text" id="pickup-location" name="pickup-location" value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} />
+            <label htmlFor="pickup-location">Pickup Location:</label>
+            <input type="text" id="pickup-location" name="pickup-location" value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} />
 
-        <label htmlFor="rental-rate">Rental Rate:</label>
-        <input type="text" id="rental-rate" name="rental-rate" value={rentalRate} onChange={(e) => setRentalRate(e.target.value)} />
-
-        <button type="submit">Post Car</button>
-      </form>
-      <h2>Your Cars</h2>
-      {cars.length === 0 ? (
-        <p>You have not posted any cars yet.</p>
-      ) : (
-        <table>
-        <thead>
-          <tr>
-            <th>Make</th>
-            <th>Seat Capacity</th>
-            <th>Pickup Location</th>
-            <th>Rental Rate</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cars.map((car, index) => (
-            <tr key={index}>
-              <td>{car.make_model}</td>
-              <td>{car.seat_capacity}</td>
-              <td>{car.pickup_location}</td>
-              <td>{car.rental_rate}</td>
-            </tr>
-          ))}
-        </tbody>
-        </table>
-      )}
-    </div>
+            <label htmlFor="rental-rate">Rental Rate:</label>
+            <input type="text" id="rental-rate" name="rental-rate" value={rentalRate} onChange={(e) => setRentalRate(e.target.value)} />
+            <Container className='postcar-button-container'>
+              <Button className="postcar-button" type="submit" color="#000000" backgroundColor={"#F5DEB3"} h="3vw" w="13vw" fontSize="20px">Post Car</Button>
+            </Container>
+          </form>
+        </Container>
+        <Container className='post-database'>
+          <h2 className='post-a-car'>Your Cars</h2>
+          {cars.length === 0 ? (
+            <p>You have not posted any cars yet.</p>
+          ) : (
+            <table className='postcar-table'>
+            <thead>
+              <tr className='postcar-db-columns'>
+                <th>Make</th>
+                <th>Seat Capacity</th>
+                <th>Pickup Location</th>
+                <th>Rental Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cars.map((car, index) => (
+                <tr key={index} className='postcar-db-rows'>
+                  <td>{car.make_model}</td>
+                  <td>{car.seat_capacity}</td>
+                  <td>{car.pickup_location}</td>
+                  <td>{car.rental_rate}</td>
+                </tr>
+              ))}
+            </tbody>
+            </table>
+          )}
+        </Container>
+      </Container>
+    </Container>
   );
 }
 

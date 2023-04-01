@@ -94,12 +94,12 @@ function LoginPage(props: any) {
                   <Form.Control type="text" placeholder="Enter contact" value={contact} onChange={(e) => setContact(e.target.value)} className='formGroups'/>
                 </Form.Group>
 
-                <Form.Group controlId="formBasicEmail">
+                <Form.Group controlId="formBasicEmailc">
                   <Form.Label>Email address:</Form.Label>
                   <Form.Control type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className='formGroups'/>
                 </Form.Group>
 
-                <Form.Group controlId="formBasicPassword">
+                <Form.Group controlId="formBasicPasswordc">
                   <Form.Label>Password:</Form.Label>
                   <Form.Control type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} className='formGroups'/>
                 </Form.Group>
@@ -109,6 +109,7 @@ function LoginPage(props: any) {
             </div>
           </div>
         </div>
+        <p className="mt-3 text-center">Don't have an account? <Link to={"/create/"+props.userType}>Create</Link></p> 
       </div>
     </Container>
   );
