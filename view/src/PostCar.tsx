@@ -6,7 +6,7 @@ interface Car {
   make_model: string;
   seat_capacity: number;
   pickup_location: string;
-  rental_rate: number
+  rental_rate: number;
 }
 
 function PostCar() {
@@ -50,7 +50,7 @@ function PostCar() {
       const newCar: Car = {make_model: makeModel,
                           seat_capacity: seatCapacity,
                           pickup_location: pickupLocation,
-                          rental_rate: Number(rentalRate)};
+                          rental_rate: Number(rentalRate)}; 
       setCars((cars: Car[])=>[...cars, newCar]);
     } else {
       alert('Failed to post car.');

@@ -27,6 +27,7 @@ function ChosenCar() {
     const customer_id = user.customer_id;
     console.log('chosen car customerid: ', customer_id)
     const car_id = chosenCar.car_id;
+    console.log('chonsen car id: ', car_id)
     const rentalCost = chosenCar.rental_rate * rentalDays;
     setRentalCost(rentalCost)
     const res = await rentCar(customer_id, car_id, rentalDays, rentalCost)

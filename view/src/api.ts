@@ -1,7 +1,7 @@
 import apisauce from 'apisauce'
  
 const machineIP = "172.25.77.206" //to change
-const machinePort = "2222"
+const machinePort = "2223"
 const api = apisauce.create({
   baseURL: `http://${machineIP}:${machinePort}`,
 })
@@ -52,7 +52,7 @@ export async function createUser(accountData: any, userType: string) {
   }
 }
 
-export async function searchCars(pickupLocation: string, seatCapacity: string) {
+export async function searchCars(pickupLocation: string, seatCapacity: number) {
   const res = await api.post('/api/cars', {pickupLocation, seatCapacity});
   if (res.ok) {
     return res.data;
@@ -102,6 +102,50 @@ export async function getOrders(user_id:any, user_type: any) {
     return res.data;
   } else {
     alert("Failed to retrieve order");
+    return false;
+  }
+}
+
+export async function updateOrder(rental_id:any, status: any) {
+  const data = {rental_id, status};
+  const res = await api.post('/api/updateorder', data);
+  if (res.ok) {
+    alert("Order updated successfully");
+    return true;
+  } else {
+    alert("Failed to update order");
+    return false;
+  }
+}
+
+export async function getStats() {
+  const res = await api.post('/api/getstats');
+  if (res.ok) {
+    return res.data;
+  } else {
+    alert("Failed to retrieve order");
+    return false;
+  }
+}
+
+export async function getUsers(user_type: any) {
+  const res = await api.post('/api/getusers', user_type);
+  if (res.ok) {
+    return res.data;
+  } else {
+    alert("Failed to retrieve users");
+    return false;
+  }
+}
+
+export async function deleteUser(id: any, user_type: any) {
+  const data = {id, user_type}
+  const res = await api.post('/api/deleteuser', data);
+  if (res.ok) {
+    alert("User deleted successfully");
+    return true;
+  } else {
+    alert("Failed to delete user");
     return false;
   }
 }
