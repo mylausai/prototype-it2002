@@ -35,7 +35,7 @@
 
   .logincreate-box {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .login-box {
@@ -73,10 +73,15 @@
     align-items: center;
     text-align: center;
     min-height: 100vh;
-    background-image: url('./images/figma_bg_dark.png');
+    background-image: url('/images/figma_bg_dark.png');
     background-position: center center;
     background-size: cover;
     background-color: #174b4d;
+  }
+  
+  .login-create-text {
+    font-size: 20px;
+    font-weight: 440;
   }
 
   .logintext {
@@ -86,6 +91,7 @@
     align-items: center;
     width: 33%;
     color: #eeebe5;
+    font-size: 30px;
   }
 
   .login-area {
@@ -114,7 +120,7 @@
   .email-pass {
     margin-bottom: 1vw;
     text-align: left;
-    font-size: 1.2vw;
+    font-size: 16px;
   }
   
   .formGroups {
@@ -159,4 +165,52 @@
   }
   
   
-  
+  @media (max-width: 767px) {
+    .login-container {
+      flex-direction: column;
+    }
+
+    .logincreatehome-box {
+      width: 70%;
+    }
+
+    .logincreate-box {
+      width:100%;
+    }
+
+    .login-box {
+      width:45%;
+    }
+
+    .create-box {
+      width:45%;
+    }
+
+    .formGroups {
+      width: 100%;
+    }
+
+    .logintext {
+      font-size: 17px;
+      margin-bottom: 1vw;
+    }
+
+    .login-create-text {
+      font-size: 14px;
+    }
+
+    .email-pass {
+      font-size: 12px;
+    }
+
+    .backHome {
+      font-size: 12px;
+    }
+
+    .homeButton Button {
+      width: 25vw;
+      height: 5vw;
+    }
+  }
+
+

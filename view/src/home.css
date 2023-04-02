@@ -8,7 +8,7 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    background-image: url('./images/figma_bg_dark.png');
+    background-image: url('/images/figma_bg_dark.png');
     background-color: #174b4d;
     justify-content: center;
 }
