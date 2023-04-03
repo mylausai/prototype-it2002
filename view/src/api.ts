@@ -95,8 +95,8 @@ export async function rentCar(customer_id: any, car_id: any, rentalDays: any, re
   }
 }
 
-export async function getOrders(user_id:any, user_type: any) {
-  const userorder = {user_id, user_type};
+export async function getOrders(user_id:any, user_type: any, status: any) {
+  const userorder = {user_id, user_type, status};
   const res = await api.post('/api/getorders',  userorder);
   if (res.ok) {
     return res.data;
@@ -146,6 +146,38 @@ export async function deleteUser(id: any, user_type: any) {
     return true;
   } else {
     alert("Failed to delete user");
+    return false;
+  }
+}
+
+export async function listCars() {
+  const res = await api.post('/api/listcars');
+  if (res.ok) {
+    return res.data;
+  } else {
+    alert("Failed to retrieve cars");
+    return false;
+  }
+}
+
+export async function deleteCar(car_id: any) {
+  const res = await api.post('/api/deletecar', car_id);
+  if (res.ok) {
+    alert("Car deleted successfully");
+    return true;
+  } else {
+    alert("Failed to delete car");
+    return false;
+  }
+}
+
+export async function updateUser(data: any) {
+  const res = await api.post('/api/updateuser', data);
+  if (res.ok) {
+    alert("User details updated successfully");
+    return true;
+  } else {
+    alert("Failed to update user details");
     return false;
   }
 }
