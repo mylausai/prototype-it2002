@@ -292,6 +292,7 @@ def get_orders():
     data = request.get_json()
     user_type = data.get('user_type')
     user_id = data.get('user_id')
+    status = data.get('status')
     try:
         if user_type == 'customer':
             # retrieve rental records for the given customer
@@ -299,20 +300,19 @@ def get_orders():
                                     "FROM rental r, cars c, owners o "
                                     "WHERE c.car_id = r.car_id "
                                     "AND c.owner_id = o.owner_id "
-                                    "AND r.customer_id = :c")
-            result = db.execute(query, {"c":user_id})
-            result = wrap_result(result)
-            return jsonify(result)
+                                    "AND r.customer_id = :c "
+                                    "AND r.status = :s")
         else:
             # retrieve rental records for the given owner
             query = sqlalchemy.text("SELECT r.rental_id, c.make_model, c.pickup_location, r.rental_days, r.total_cost, cu.contact, r.status "
                                     "FROM rental r, cars c, customers cu "
                                     "WHERE c.car_id = r.car_id "
                                     "AND r.customer_id = cu.customer_id "
-                                    "AND c.owner_id = :o")
-            result = db.execute(query, {"o":user_id})
-            result = wrap_result(result)
-            return jsonify(result)
+                                    "AND c.owner_id = :o "
+                                    "AND r.status = :s")
+        result = db.execute(query, {"c":user_id, "s":status})
+        result = wrap_result(result)
+        return jsonify(result)
     except Exception as e:
         print(e)
         db.rollback()
@@ -370,27 +370,27 @@ def get_stats():
         db.rollback()
         return Response(str(e), 403)
 
-@app.post('/apigetusers')
+@app.post('/api/getusers')
 def get_users():
-    data = request.get_json()
-    user_type = data.get('user_type')
+    user_type = request.get_json()
     try:
         if user_type == 'customer':
-            query = sqlalchemy.text("SELECT c.customer_id, c.name, c.contact, c.email, "
+            query = sqlalchemy.text("SELECT c.customer_id id, c.name, c.contact, c.email, "
                                     "SUM(CASE status WHEN 'cancelled' THEN 1 ELSE 0 END) total_cancelled, "
                                     "SUM(CASE status WHEN 'completed' THEN 1 ELSE 0 END) total_completed "
                                     "FROM rental r "
-                                    "LEFT JOIN customers c "
+                                    "RIGHT JOIN customers c "
                                     "ON r.customer_id = c.customer_id "
-                                    "GROUP BY c.customer_id, c.name, c.contact, c.email")
+                                    "GROUP BY c.customer_id, c.name, c.contact, c.email "
+                                    "ORDER BY id")
         else:
-            query = sqlalchemy.text("SELECT o.owner_id, o.name, o.contact, o.email, "
-                                    "SUM(CASE status WHEN 'cancelled' THEN 1 ELSE 0 END) total_cancelled, "
+            query = sqlalchemy.text("SELECT o.owner_id id, o.name, o.contact, o.email, SUM(CASE status WHEN 'cancelled' THEN 1 ELSE 0 END) total_cancelled, "
                                     "SUM(CASE status WHEN 'completed' THEN 1 ELSE 0 END) total_completed "
-                                    "FROM rental r, cars c, owners o "
-                                    "WHERE r.car_id = c.car_id "
-                                    "AND c.owner_id = o.owner_id "
-                                    "GROUP BY o.owner_id, o.name, o.contact, o.email")
+                                    "FROM owners o "
+                                    "LEFT JOIN cars c ON o.owner_id = c.owner_id "
+                                    "LEFT JOIN rental r ON c.car_id = r.car_id "
+                                    "GROUP BY o.owner_id, o.name, o.contact, o.email "
+                                    "ORDER BY id")
         result = db.execute(query)
         result = wrap_result(result)
         return jsonify(result)
@@ -404,6 +404,7 @@ def delete_user():
     data = request.get_json()
     user_type = data.get('user_type')
     id = data.get('id') 
+    print("delete: ", id)
     try:
         if user_type == 'customer':
             query = sqlalchemy.text("DELETE FROM users "
@@ -425,6 +426,68 @@ def delete_user():
         db.rollback()
         return Response(str(e), 403)
 
+@app.post('/api/listcars')
+def list_cars():
+    try:
+        query = sqlalchemy.text("SELECT c.car_id, c.make_model, c.seat_capacity, c.pickup_location, c.rental_rate, "
+                                "SUM(CASE status WHEN 'completed' THEN 1 ELSE 0 END) total_rental "
+                                "FROM cars c, rental r "
+                                "WHERE r.car_id = c.car_id "
+                                "GROUP BY c.car_id, c.make_model, c.seat_capacity, c.pickup_location, c.rental_rate")
+        result = db.execute(query)
+        result = wrap_result(result)
+        return jsonify(result)                       
+    except Exception as e:
+        print(e)
+        db.rollback()
+        return Response(str(e), 403)
+    
+@app.post('/api/deletecar')
+def delete_car():
+    car_id = request.get_json()
+    try:
+        query = sqlalchemy.text("DELETE FROM cars "
+                                "WHERE car_id=:c")
+        db.execute(query, {"c":car_id})
+        db.commit()
+        response = {
+            "success": True,
+            "message": "Car deleted successfully"
+        }
+        return jsonify(response), 201                        
+    except Exception as e:
+        print(e)
+        db.rollback()
+        return Response(str(e), 403)
+    
+@app.post('/api/updateuser')
+def update_user():
+    data = request.get_json()
+    id = data.get("id")
+    contact = data.get("newContact")
+    name = data.get("newName")
+    user_type = data.get("user_type")
+    
+    try:
+        if user_type == "customer":
+            query = sqlalchemy.text("UPDATE customers "
+                                    "SET name =:n, contact =:c "
+                                    "WHERE customer_id =:i")
+        else:
+            query = sqlalchemy.text("UPDATE owners "
+                                    "SET name =:n, contact =:c "
+                                    "WHERE owner_id =:i")
+        db.execute(query, {"n":name, "c":contact, "i":id})
+        db.commit()
+        response = {
+            "success": True,
+            "message": "User details updated successfully"
+        }
+        return jsonify(response), 201 
+    except Exception as e:
+        print(e)
+        db.rollback()
+        return Response(str(e), 403)    
 # This method can be used by the waitress-serve CLI 
 def create_app():
    return app
