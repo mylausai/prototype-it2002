@@ -125,13 +125,13 @@ function OrderHistory(props: any) {
       if (user.customer_id || user.owner_id) { // only fetch order history with id present
         const user_id = props.userType === 'customer' ? user.customer_id : user.owner_id;
         const user_type = props.userType;
-        const orders = await getOrders(user_id, user_type) as Record<string, Order>;
-        console.log('fetchedorders: ', orders)
+        const status = activeTab;
+        const orders = await getOrders(user_id, user_type, status) as Record<string, Order>;
         setOrders(Object.values(orders));
       }
     }
     fetchOrders();
-  }, [user]);
+  }, [user, activeTab]); // update based on status
 
   function handleCancel(order: Order) {
     order.status = 'cancelled';
@@ -154,12 +154,7 @@ function OrderHistory(props: any) {
     const rental_id = order.rental_id;
     const status = order.status;
     updateOrder(rental_id, status);
-    // TODO: Update order status on server using API call
   }
-
-  const filterOrdersByStatus = (status: string) => {
-    return orders.filter((order) => order.status === status);
-  };
 
   const tabNames = ['pending', 'confirmed', 'cancelled', 'completed'];
 
@@ -206,7 +201,7 @@ function OrderHistory(props: any) {
           </tr>
         </thead>
         <tbody>
-          {filterOrdersByStatus(activeTab).map((order, index) => (
+          {orders.map((order, index) => (
             <tr key={index}>
               <td>{order.make_model}</td>
               <td>{order.pickup_location}</td>
