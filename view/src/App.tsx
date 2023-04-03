@@ -11,6 +11,9 @@ import ChosenCar from './ChosenCar'
 import HomePage from './HomePage'
 import PostCar from './PostCar'
 import OrderHistory from './OrderHistory'
+import AdminDashboard from './AdminDashboard'
+import UserList from './UserList'
+import CarList from './CarList'
 import { ChakraProvider } from '@chakra-ui/react'
 
 function App() {
@@ -41,6 +44,14 @@ function App() {
         <Route path="/order/customer" element={<OrderHistory userType="customer"/>}>
         </Route>
         <Route path="/order/owner" element={<OrderHistory userType="owner"/>}>
+        </Route>
+        <Route path="/admin" element={<AdminDashboard/>}>
+        </Route>
+        <Route path="/admin/customers" element={<UserList userType="customer"/>}>
+        </Route>
+        <Route path="/admin/owners" element={<UserList userType="owner"/>}>
+        </Route>
+        <Route path="/admin/cars" element={<CarList/>}>
         </Route>
       </Routes>
     </div>
