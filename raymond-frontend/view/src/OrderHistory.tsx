@@ -95,6 +95,9 @@ export default OrderHistory;
 import { useEffect, useState } from 'react';
 import { getOrders, updateOrder } from './api';
 import { Link } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
+
+import './home.css';
 
 interface Order {
   rental_id: number;
@@ -158,80 +161,95 @@ function OrderHistory(props: any) {
 
   const tabNames = ['pending', 'confirmed', 'cancelled', 'completed'];
 
-  const TabButton = (props: { status: string, label: string }) => {
-    const { status, label } = props;
+  const TabButton = (props: { status: string, label: string, className: string}) => {
+    const { status, label, className } = props;
     const handleClick = () => setActiveTab(status);
     const isActive = activeTab === status;
     return (
-      <button onClick={handleClick} className={isActive ? 'active' : ''}>{label}</button>
+      <button onClick={handleClick} className={`${isActive ? 'active' : ''} ${className || ''}`}>{label}</button>
     );
   };
 
   return (
-    <div>
-      <nav>
+    <Container className="signed-in-container">
+      <nav className="signed-in-nav">
         <ul>
-          <li>
-            <Link to="/">Sign out</Link>
-          </li>
           <li>
             <Link to={"/home/"+props.userType}>Home</Link>
           </li>
+          {props.userType === 'customer' && (
+          <li>
+            <Link to="/searchcar">Search Cars</Link>
+          </li>
+          )}
+          {props.userType === 'owner' && (
+          <li>
+            <Link to="/postcar">Post Car</Link>
+          </li>
+          )}
+          <li className="selected-tab">
+            <Link to={"/order/customer"} className="no-cursor">Order History</Link>
+          </li>
+          <li>
+            <Link to="/">Sign out</Link>
+          </li>
         </ul>
-      </nav>  
-      <h2>Order History</h2>
-      <div>
-        {tabNames.map((status) => (
-          <TabButton key={status} status={status} label={status.charAt(0).toUpperCase() + status.slice(1)} />
-        ))}
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Make/Model</th>
-            <th>Pickup Location</th>
-            <th>Rental Days</th>
-            <th>Total Cost</th>
-            {props.userType === 'customer' ? (
-              <th>Owner's Contact</th>
-            ) : (
-              <th>Customer's Contact</th>
-            )}
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((order, index) => (
-            <tr key={index}>
-              <td>{order.make_model}</td>
-              <td>{order.pickup_location}</td>
-              <td>{order.rental_days}</td>
-              <td>{order.total_cost}</td>
-              {props.userType === 'customer' ? (
-                <td>{order.contact}</td>
-              ) : (
-                <td>{order.contact}</td>
-              )}
-              <td>
-                {activeTab === 'pending' && (
-                <>
-                  {props.userType === 'customer' ? (
-                    <button onClick={() => handleCancel(order)}>Cancel</button>
-                  ) : (
-                    <><button onClick={() => handleCancel(order)}>Cancel</button>
-                    <button onClick={() => handleConfirm(order)}>Confirm</button></>
-                  )} 
-                </>  
-                )}
-                {activeTab === 'confirmed' && (
-                  <button onClick={() => handleComplete(order)}>Complete</button>
-                )}
-              </td>
-            </tr>
+      </nav> 
+      <Container className="orderHistoryMain">
+        <h2 className='orderHistoryTitle'>Order History</h2>
+        <div>
+          {tabNames.map((status) => (
+            <TabButton key={status} status={status} label={status.charAt(0).toUpperCase() + status.slice(1)} className="tab-button"/>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </div>
+        <table>
+          <thead className='orderHist-db-columns'>
+            <tr>
+              <th>Make/Model</th>
+              <th>Pickup Location</th>
+              <th>Rental Days</th>
+              <th>Total Cost</th>
+              {props.userType === 'customer' ? (
+                <th>Owner's Contact</th>
+              ) : (
+                <th>Customer's Contact</th>
+              )}
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody className='orderHist-db-rows'>
+            {orders.map((order, index) => (
+              <tr key={index}>
+                <td>{order.make_model}</td>
+                <td>{order.pickup_location}</td>
+                <td>{order.rental_days}</td>
+                <td>{order.total_cost}</td>
+                {props.userType === 'customer' ? (
+                  <td>{order.contact}</td>
+                ) : (
+                  <td>{order.contact}</td>
+                )}
+                <td>
+                  {activeTab === 'pending' && (
+                  <>
+                    {props.userType === 'customer' ? (
+                      <button onClick={() => handleCancel(order)}>Cancel</button>
+                    ) : (
+                      <><button onClick={() => handleCancel(order)}>Cancel</button>
+                      <button onClick={() => handleConfirm(order)}>Confirm</button></>
+                    )} 
+                  </>  
+                  )}
+                  {activeTab === 'confirmed' && (
+                    <button onClick={() => handleComplete(order)}>Complete</button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        </Container>
+    </Container>
   );               
 };
 

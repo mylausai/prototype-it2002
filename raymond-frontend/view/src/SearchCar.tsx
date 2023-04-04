@@ -92,6 +92,9 @@ function SearchCar() {
     setRentalCost(rentalCost)
     const res = await rentCar(customer_id, car_id, rentalDays, rentalCost)
     if(res) setIsConfirmed(true); // to be fixed (wait for res ok)
+
+    // refresh window so user cannot select confirmed cars
+    window.location.reload();
   };
   //
 
@@ -103,10 +106,10 @@ function SearchCar() {
             <Link to="/home/customer">Home</Link>
           </li>
           <li  className="selected-tab">
-            <Link to="/searchcar" className="no-cursor">Search Car</Link>
+            <Link to="/searchcar" className="no-cursor">Search Cars</Link>
           </li>
           <li>
-            <Link to={"/order/owner"}>Order History</Link>
+            <Link to={"/order/customer"}>Order History</Link>
           </li>
           <li>
             <Link to="/">Sign out</Link>

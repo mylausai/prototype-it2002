@@ -217,6 +217,66 @@ input[type="number"], rentDays{
     padding: 1.5vw 1vw;
 }
 
+/* Order History */
+.orderHistoryTitle {
+    font-size: 20px;
+    font-weight: 500;
+    color: #eeebe5;
+}
+
+.tab-button {
+    display: inline-block;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #abc7c8;
+    color: #1c2525;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 1.5vw 1vw;
+    transition: background-color 0.3s ease-in-out;
+}
+  
+.tab-button:hover {
+    background-color: #f5deb3;
+    color:#1c2525;
+}
+
+button.active {
+    background-color: #f5deb3;
+    color:#1c2525;
+  }
+
+.orderHistoryMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2vw;
+    height: 100%;
+    width: 100%;
+    background-image: url('/images/figma_bg_dark.png');
+    background-color: #174b4d;
+    background-size: cover;
+    overflow: auto;
+}
+
+.orderHist-db-columns th{
+    font-size: 18px;
+    font-weight: 400;
+    background-color: #d9e6e6b6;
+    color: #173637;
+    padding: 1vw;
+}
+
+.orderHist-db-rows td{
+    font-size: 18px;
+    font-weight: 350;
+    background-color: #174b4dcf;
+    color: #eeebe5;
+    border-color: #1c2525;
+    padding: 1vw;
+}
+
 @media (max-width: 767px) {
     .signed-in-nav li a{
         font-size: 14px;
