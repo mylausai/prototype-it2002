@@ -61,7 +61,7 @@ function PostCar() {
   };
 
   return (
-    <Container className="signed-in-container">
+    <Container className="signed-in-container-postcar">
       <nav className="signed-in-nav">
         <ul>
           <li>

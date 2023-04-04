@@ -1,3 +1,13 @@
+.signed-in-container-postcar {
+    background-image: url('/images/figma_bg_dark.png');
+    background-size: cover;
+    overflow: auto;
+    background-color: #174b4d;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 .signed-in-container {
     height: 100vh;
     display: flex;
@@ -275,6 +285,34 @@ button.active {
     color: #eeebe5;
     border-color: #1c2525;
     padding: 1vw;
+}
+
+.actionButtons {
+    padding: 0 0.3vw !important;
+}
+.actionButtons button {
+    padding: 0.5vw 1vw;
+    display: inline-block;
+    border: none;
+    border-radius: 4px;
+    background-color: #abc7c8;
+    color: #1c2525;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0.1vw;
+}
+
+.cancelButton {
+    background-color: #f57471 !important;
+}
+
+.confirmButton {
+    background-color: #afecbf !important;
+    margin-right: 0.5vw !important;
+}
+
+.completeButton {
+    background-color: #a7d1ff !important;
 }
 
 @media (max-width: 767px) {

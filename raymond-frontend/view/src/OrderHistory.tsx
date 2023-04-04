@@ -137,18 +137,30 @@ function OrderHistory(props: any) {
   }, [user, activeTab]); // update based on status
 
   function handleCancel(order: Order) {
-    order.status = 'cancelled';
-    reviseOrder(order);
+    const isConfirmed = window.confirm("Are you sure you want to cancel?");
+    if (isConfirmed) {
+      order.status = 'cancelled';
+      reviseOrder(order);
+      window.alert(`Order cancelled.`)
+    }
   }
 
   function handleConfirm(order: Order) {
-    order.status = 'confirmed';
-    reviseOrder(order);
+    const isConfirmed = window.confirm("Are you sure you want to confirm?");
+    if (isConfirmed) {
+      order.status = 'confirmed';
+      reviseOrder(order);
+      window.alert(`Order confirmed.`)
+    }
   }
 
   function handleComplete(order: Order) {
-    order.status = 'completed';
-    reviseOrder(order);
+    const isConfirmed = window.confirm("Complete your order?");
+    if (isConfirmed) {
+      order.status = 'completed';
+      reviseOrder(order);
+      window.alert(`Order completed.`)
+    }
   }
 
   async function reviseOrder(order: Order) {
@@ -157,6 +169,7 @@ function OrderHistory(props: any) {
     const rental_id = order.rental_id;
     const status = order.status;
     updateOrder(rental_id, status);
+    window.location.reload();
   }
 
   const tabNames = ['pending', 'confirmed', 'cancelled', 'completed'];
@@ -214,7 +227,8 @@ function OrderHistory(props: any) {
               ) : (
                 <th>Customer's Contact</th>
               )}
-              <th>Actions</th>
+              {activeTab === 'pending' || activeTab === 'confirmed' ? (
+              <th>Actions</th>):''}
             </tr>
           </thead>
           <tbody className='orderHist-db-rows'>
@@ -229,21 +243,22 @@ function OrderHistory(props: any) {
                 ) : (
                   <td>{order.contact}</td>
                 )}
-                <td>
+                {activeTab === 'pending' || activeTab === 'confirmed' ? (
+                <td className='actionButtons'>
                   {activeTab === 'pending' && (
                   <>
                     {props.userType === 'customer' ? (
-                      <button onClick={() => handleCancel(order)}>Cancel</button>
+                      <button className='cancelButton' onClick={() => handleCancel(order)}>Cancel</button>
                     ) : (
-                      <><button onClick={() => handleCancel(order)}>Cancel</button>
-                      <button onClick={() => handleConfirm(order)}>Confirm</button></>
+                      <><button className='confirmButton' onClick={() => handleConfirm(order)}>Confirm</button>
+                      <button className='cancelButton' onClick={() => handleCancel(order)}>Cancel</button></>
                     )} 
                   </>  
                   )}
                   {activeTab === 'confirmed' && (
-                    <button onClick={() => handleComplete(order)}>Complete</button>
+                    <button className='completeButton' onClick={() => handleComplete(order)}>Complete</button>
                   )}
-                </td>
+                </td>) :''}
               </tr>
             ))}
           </tbody>

@@ -93,6 +93,8 @@ function SearchCar() {
     const res = await rentCar(customer_id, car_id, rentalDays, rentalCost)
     if(res) setIsConfirmed(true); // to be fixed (wait for res ok)
 
+    // alert instead of text in website cause of refresh
+    window.alert(`Order Confirmed\nMake/Model: ${chosenCar?.make_model}\nRental Days: ${rentalDays}\nRental Cost: $${rentalCost}`);
     // refresh window so user cannot select confirmed cars
     window.location.reload();
   };
@@ -175,16 +177,7 @@ function SearchCar() {
             <br />
 
             <Button onClick={handleConfirm} className="postcar-button" color="#000000" backgroundColor={"#F5DEB3" as string} h="3vw" w="13vw" fontSize="20px">Confirm</Button>
-
-            {isConfirmed && (
-              <div>
-                <h3>Order Confirmed</h3>
-                <p>Make/Model: {chosenCar?.make_model}</p>
-                <p>Rental Days: {rentalDays}</p>
-                <p>Rental Cost: ${rentalCost}</p>
-                {/* ...other order details */}
-              </div>
-            )}
+            
           </Container>
         </Container>}
       </Container>

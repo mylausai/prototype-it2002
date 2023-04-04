@@ -303,6 +303,7 @@ def get_orders():
     user_id = data.get('user_id')
     status = data.get('status')
     try:
+        print(user_type)
         if user_type == 'customer':
             # retrieve rental records for the given customer
             query = sqlalchemy.text("SELECT r.rental_id, c.make_model, c.pickup_location, r.rental_days, r.total_cost, o.contact, r.status "
@@ -311,6 +312,7 @@ def get_orders():
                                     "AND c.owner_id = o.owner_id "
                                     "AND r.customer_id = :c "
                                     "AND r.status = :s")
+            result = db.execute(query, {"c":user_id, "s":status})
         else:
             # retrieve rental records for the given owner
             query = sqlalchemy.text("SELECT r.rental_id, c.make_model, c.pickup_location, r.rental_days, r.total_cost, cu.contact, r.status "
@@ -319,7 +321,7 @@ def get_orders():
                                     "AND r.customer_id = cu.customer_id "
                                     "AND c.owner_id = :o "
                                     "AND r.status = :s")
-        result = db.execute(query, {"c":user_id, "s":status})
+            result = db.execute(query, {"o":user_id, "s":status})
         result = wrap_result(result)
         return jsonify(result)
     except Exception as e:
