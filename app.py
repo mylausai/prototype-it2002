@@ -159,7 +159,7 @@ def create_owner():
         db.execute(query, {"u":user_id, "e":email, "p":password})
         db.commit()
         query = sqlalchemy.text(
-            "INSERT INTO customers (owner_id, user_id, name, contact, email) "
+            "INSERT INTO owners (owner_id, user_id, name, contact, email) "
             "VALUES (:o, :u, :n, :c, :e)"
             )
         db.execute(query, {"o":owner_id, "u":user_id, "n":name, "c":contact, "e":email})
