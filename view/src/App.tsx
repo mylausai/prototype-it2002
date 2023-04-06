@@ -1,22 +1,34 @@
-// App.tsx
-
 import './App.scss'
 import React from 'react'
-import { Link, Routes, Route } from 'react-router-dom'
+import { useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Home from './Home'
 import LoginPage from './LoginPage'
-import CreateAccountPage from './CreateAccountPage'
 import SearchCar from './SearchCar'
-import ChosenCar from './ChosenCar'
 import HomePage from './HomePage'
 import PostCar from './PostCar'
 import OrderHistory from './OrderHistory'
 import AdminDashboard from './AdminDashboard'
 import UserList from './UserList'
 import CarList from './CarList'
+import AdminLogin from './AdminLogin'
 import { ChakraProvider } from '@chakra-ui/react'
 
+interface PrivateAdminRouteProps {
+  element: JSX.Element;
+}
+
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const PrivateAdminRoute = ({ element }: PrivateAdminRouteProps) => {
+    return loggedIn ? (
+      element
+    ) : (
+      <Navigate to="/admin" replace />
+    );
+  };
+
   return (
     <ChakraProvider>
     <div>
@@ -31,13 +43,7 @@ function App() {
         </Route>
         <Route path="/home/owner" element={<Home userType="owner"/>}>
         </Route>
-        <Route path="/create/customer" element={<CreateAccountPage userType="customer"/>}>
-        </Route>
-        <Route path="/create/owner" element={<CreateAccountPage userType="owner"/>}>
-        </Route>
         <Route path="/searchcar" element={<SearchCar />}>
-        </Route>
-        <Route path="/car/:id" element={<ChosenCar />}>
         </Route>
         <Route path="/postcar" element={<PostCar />}>
         </Route>
@@ -45,13 +51,15 @@ function App() {
         </Route>
         <Route path="/order/owner" element={<OrderHistory userType="owner"/>}>
         </Route>
-        <Route path="/admin" element={<AdminDashboard/>}>
+        <Route path="/admin" element={<AdminLogin setLoggedIn={setLoggedIn}/>}>
         </Route>
-        <Route path="/admin/customers" element={<UserList userType="customer"/>}>
+        <Route path="/admin/dashboard" element={<PrivateAdminRoute element={<AdminDashboard setLoggedIn={setLoggedIn}/>} />}>
         </Route>
-        <Route path="/admin/owners" element={<UserList userType="owner"/>}>
+        <Route path="/admin/customers" element={<PrivateAdminRoute element={<UserList userType="customer" setLoggedIn={setLoggedIn}/>} />}>
         </Route>
-        <Route path="/admin/cars" element={<CarList/>}>
+        <Route path="/admin/owners" element={<PrivateAdminRoute element={<UserList userType="owner" setLoggedIn={setLoggedIn}/>} />}>
+        </Route>
+        <Route path="/admin/cars" element={<PrivateAdminRoute element={<CarList setLoggedIn={setLoggedIn}/>} />}>
         </Route>
       </Routes>
     </div>

@@ -1,3 +1,290 @@
+.homepage-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  background-image: url('./images/figma_bg_dark.png');
+  background-position: center center;
+  background-size: cover;
+  background-color: #174b4d;
+}
+
+.home-box {
+  height: 22vw;
+  width: 55vw;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.logincreatehome-box {
+  min-height: 38vw;
+  min-width: 45vw;
+  background-color: #8381815f;
+  color: #eeebe5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2% 2%;
+  border-radius: 10px;
+}
+
+.owner-logincreatehome-box {
+  min-height: 38vw;
+  min-width: 45vw;
+  background-color: #8381815f;
+  color: #eeebe5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2% 2%;
+  border-radius: 10px;
+}
+
+.logincreate-box {
+  display: flex;
+  justify-content: center;
+}
+
+.login-box {
+  margin-right: 1vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 20vw;
+}
+
+.create-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 20vw;
+}
+
+.home-title {
+  font-size: 3.3vw;
+  font-weight: bold;
+  margin-bottom: 1.2vw;
+  color: #174b4d;
+}
+
+.home-subtitle {
+  font-size: 2rem;
+  margin-bottom: 4rem;
+}
+
+/* Login Page*/
+.login-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  background-image: url('/images/figma_bg_dark.png');
+  background-position: center center;
+  background-size: cover;
+  background-color: #174b4d;
+}
+
+.owner-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  background-image: url('/images/figma_bg_owner.png');
+  background-position: center center;
+  background-size: cover;
+  background-color: #42174d;
+}
+
+.login-create-text {
+  font-size: 20px;
+  font-weight: 440;
+}
+
+.logintext {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 33%;
+  color: #eeebe5;
+  font-size: 30px;
+}
+
+.login-area {
+  background-color: #b0bfbfe1;
+  color: #06393b;
+  padding-top: 1.2vw;
+  padding-left: 1.8vw;
+  padding-right: 1.8vw;
+  padding-bottom: 1.2vw;
+  margin-top: 0.5vw;
+  border-radius: 5px;
+}
+
+.owner-login-area {
+  background-color: #bab0bfe1;
+  color: #2a063b;
+  padding-top: 1.2vw;
+  padding-left: 1.8vw;
+  padding-right: 1.8vw;
+  padding-bottom: 1.2vw;
+  margin-top: 0.5vw;
+}
+
+.login-box {
+  margin-right: 2.3vw;
+}
+
+.homeButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 1vw;
+  margin-top: 1vw;
+  color: #174b4d;
+}
+
+.owner-homeButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 1vw;
+  margin-top: 1vw;
+  color: #174b4d;
+}
+
+.owner-container Button {
+  color: #3f174d;
+}
+
+.email-pass {
+  margin-bottom: 1vw;
+  text-align: left;
+  font-size: 16px;
+}
+
+.formGroups {
+  width:15vw;
+  height:2.3vw;
+}
+
+form input {
+  display: block;
+  margin-bottom: 10px;
+  padding: 5px;
+  font-size: 1em;
+  background-color: #36454F;
+  color: #F5DEB3;
+}
+
+.owner-login-area form input {
+  background-color: #48364f;
+  color: #F5DEB3;
+}
+
+.owner-login-area Button {
+  background-color: #3f174d;
+  color: #eeebe5;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+nav li {
+  margin-right: 10px;
+}
+
+nav li:last-child {
+  margin-right: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+}
+
+nav a:hover {
+  background-color: #fff;
+  color: #333;
+}
+
+
+@media (max-width: 767px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .logincreatehome-box {
+    width: 70%;
+  }
+
+  .owner-logincreatehome-box {
+    width: 70%;
+  }
+
+  .logincreate-box {
+    width:100%;
+  }
+
+  .login-box {
+    width:45%;
+  }
+
+  .create-box {
+    width:45%;
+  }
+
+  .formGroups {
+    width: 100%;
+  }
+
+  .logintext {
+    font-size: 17px;
+    margin-bottom: 1vw;
+  }
+
+  .login-create-text {
+    font-size: 14px;
+  }
+
+  .email-pass {
+    font-size: 12px;
+  }
+
+  .backHome {
+    font-size: 12px;
+  }
+
+  .homeButton Button {
+    width: 25vw;
+    height: 5vw;
+  }
+}
+
+
+
+
+
+
+/* OLD
 .home-container {
     height: 100%;
     display: flex;
@@ -63,5 +350,5 @@
     color: #333;
   }
   
-  
+*/  
   

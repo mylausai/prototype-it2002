@@ -1,15 +1,20 @@
 import apisauce from 'apisauce'
  
 const machineIP = "172.25.77.206" //to change
-const machinePort = "2223"
+const machinePort = "2222"
 const api = apisauce.create({
   baseURL: `http://${machineIP}:${machinePort}`,
 })
+
 
 interface LoginResponse {
   success: boolean;
   owner?: any;
   customer?: any;
+}
+
+interface CreateResponse {
+  message: any;
 }
 
 export async function login(email: string, password: string, userType: string) {
@@ -24,7 +29,7 @@ export async function login(email: string, password: string, userType: string) {
   if (res.ok) {
       // Authentication succeeded
       console.log("Authentication succeeded!");
-      const { success, owner, customer } = res.data as LoginResponse
+      const { success, owner, customer } = res.data as LoginResponse;
       if (owner) {
         alert('Logged in as owner')
         return owner
@@ -47,7 +52,11 @@ export async function createUser(accountData: any, userType: string) {
     alert("Account created successfully, please log in");
     return true;
   } else {
-    alert("Failed to create account");
+    const {message} = res.data as CreateResponse;
+    if (message) {
+      alert(message);
+    } else
+    alert('Error in creating account')
     return false;
   }
 }
@@ -83,8 +92,8 @@ export async function postCar(carData: any) {
   }
 }
 
-export async function rentCar(customer_id: any, car_id: any, rentalDays: any, rentalCost: any) {
-  const rentinfo = {customer_id, car_id, rentalDays, rentalCost};
+export async function rentCar(customer_id: any, car_id: any, rentalDays: any, rentalCost: any, pickup_location: any) {
+  const rentinfo = {customer_id, car_id, rentalDays, rentalCost, pickup_location};
   const res = await api.post('/api/rentcar', rentinfo);
   if (res.ok) {
     alert("Car rented successfully");
@@ -123,13 +132,14 @@ export async function getStats() {
   if (res.ok) {
     return res.data;
   } else {
-    alert("Failed to retrieve order");
+    alert("Failed to retrieve stats");
     return false;
   }
 }
 
-export async function getUsers(user_type: any) {
-  const res = await api.post('/api/getusers', user_type);
+export async function getUsers(user_type: any, id: any) {
+  const data = {user_type, id}
+  const res = await api.post('/api/getusers', data);
   if (res.ok) {
     return res.data;
   } else {
@@ -178,6 +188,28 @@ export async function updateUser(data: any) {
     return true;
   } else {
     alert("Failed to update user details");
+    return false;
+  }
+}
+
+export async function updateCar(data: any) {
+  const res = await api.post('/api/updatecar', data);
+  if (res.ok) {
+    alert("Car details updated successfully");
+    return true;
+  } else {
+    alert("Failed to update car details");
+    return false;
+  }
+}
+
+export async function adminlogin(data: any) {
+  const res = await api.post('/api/adminlogin', data);
+  if (res.ok) {
+    alert("Logged in as admin");
+    return true;
+  } else {
+    alert("Authentication failed");
     return false;
   }
 }

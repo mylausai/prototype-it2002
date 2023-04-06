@@ -2,6 +2,7 @@ import { CardStylesProvider } from '@chakra-ui/card/dist/card-context';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getStats } from './api';
+import { Container } from 'react-bootstrap';
 
 interface Stats {
     total_customers: number;
@@ -13,7 +14,11 @@ interface Stats {
     total_completed: number
 }
 
-function AdminDashboard() {
+interface AdminDashboardProps {
+  setLoggedIn: (loggedIn: boolean) => void;
+}
+
+function AdminDashboard({ setLoggedIn }: AdminDashboardProps) {
   const [stats, setStats] = useState<Stats[]>([])
 
   useEffect(() => {
@@ -25,15 +30,16 @@ function AdminDashboard() {
     fetchStats();
   }, []);
 
+  const handleClick = () => {
+    setLoggedIn(false);
+  }
+
   return (
-    <div>
-      <nav>
+    <Container className="dashboardContainer">
+      <nav className='adminNav'>
         <ul>
-          <li>
-            <Link to="/">Sign out</Link>
-          </li>
-          <li>
-            <Link to="/admin">Dashboard</Link>
+          <li className="selected-tab">
+            <Link className="no-cursor" to="/admin/dashboard">Dashboard</Link>
           </li>
           <li>
             <Link to="/admin/customers">Customers</Link>
@@ -44,21 +50,29 @@ function AdminDashboard() {
           <li>
             <Link to="/admin/cars">Cars</Link>
           </li>
+          <li>
+            <Link to="/admin" onClick={handleClick}>Logout</Link>
+          </li>
         </ul>
       </nav>
-      <h2>Dashboard</h2>
-      {stats.length > 0 &&
-      <div>
-        <h3>Stats</h3>
-            <p>Total customers: {stats[0].total_customers}</p>
-            <p>Total owners: {stats[0].total_owners}</p>
-            <p>Total cars: {stats[0].total_cars}</p>
-            <p>Pending rentals: {stats[0].total_pending}</p>
-            <p>Ongoing rentals: {stats[0].total_ongoing}</p>
-            <p>Cancelled rentals: {stats[0].total_cancelled}</p>
-            <p>Completed rentals: {stats[0].total_completed}</p>
-      </div>}
-    </div>
+      <Container className='userListArea'>
+        <h2>SureCar Statistics</h2>
+        {stats.length > 0 &&
+        <Container className='statsSection'>
+          <Container className='statsRow'>
+              <Container className='statsBlock'><p>👥 Total customers:<br/><span className='statsText'>{stats[0].total_customers}</span></p></Container>
+              <Container className='statsBlock'><p>👤 Total owners:<br/><span className='statsText'>{stats[0].total_owners}</span></p></Container>
+              <Container className='statsBlock'><p>🚗 Total cars:<br/><span className='statsText'>{stats[0].total_cars}</span></p></Container>
+          </Container>
+          <Container className='statsRow'>
+              <Container className='statsBlock'><p>⏳ Pending rentals:<br/><span className='statsText'>{stats[0].total_pending}</span></p></Container>
+              <Container className='statsBlock'><p>⏳ Ongoing rentals:<br/><span className='statsText'>{stats[0].total_ongoing}</span></p></Container>
+              <Container className='statsBlock'><p>❌ Cancelled rentals:<br/><span className='statsText'>{stats[0].total_cancelled}</span></p></Container>
+              <Container className='statsBlock'><p>✅ Completed rentals:<br/><span className='statsText'>{stats[0].total_completed}</span></p></Container>
+          </Container>
+        </Container>}
+      </Container>
+    </Container>
   );
 }
 
