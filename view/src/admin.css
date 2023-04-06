@@ -1,0 +1,203 @@
+.adminArea {
+    background-image: url('/images/figma_bg_admin2.png');
+    background-size: cover;
+    overflow: auto;
+    background-color: #0E1F34;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.adminBox {
+    background-color: rgba(120, 118, 118, 0.204);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #eeebe5;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 2vw 1vw;
+}
+
+.adminLoginButton {
+    display: flex;
+    justify-content: center;
+}
+
+.dashboardContainer {
+    background-image: url('/images/figma_bg_admin2.png');
+    background-size: cover;
+    overflow: auto;
+    background-color: #0E1F34;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+}
+
+.userListContainer {
+    background-image: url('/images/figma_bg_admin2.png');
+    background-size: cover;
+    overflow: auto;
+    background-color: #0E1F34;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+}
+
+.adminNav {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+    align-content: center;
+    background-color: #0f233b;
+}
+
+.adminNav ul {
+    background-color: rgb(13, 43, 81);
+    padding: 0;
+}
+
+.adminNav li {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.adminNav li a{
+    color: #eeebe5;
+    font-size: 20px;
+    font-weight: 450;
+    padding: 0.8vw 2vw;
+    transition: color 0.3s ease-in-out;
+}
+
+.adminNav li a:hover{
+    background-color: #abc7c8;
+    color: #173637;
+    font-size: 20px;
+    font-weight: 450;
+    transition: color 0.3s ease-in-out;
+}
+
+.adminNav li a.no-cursor {
+    cursor: default;
+    background-color: #abc7c8;
+    color: #173637 !important;
+    font-size: 20px;
+    font-weight: 450;
+}
+
+.userListArea {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    padding: 0vw 5vw;
+    align-items: center;
+    color: #eeebe5;
+}
+
+.userListArea h2 {
+    color: #eeebe5;
+    font-weight: 450;
+    font-size: 33px;
+}
+
+.admin-table {
+    margin-top: 1vw;
+}
+
+.admin-db-columns th{
+    font-size: 18px;
+    font-weight: 400;
+    background-color: #d9e3e6b6;
+    color: #172937;
+    padding: 0.2vw 0.3vw;
+}
+
+.admin-db-rows td{
+    font-size: 18px;
+    font-weight: 350;
+    background-color: #17374dcf;
+    color: #eeebe5;
+    border-color: #1c2125;
+    padding: 1vw;
+}
+
+.adminActionButtons {
+    padding: 0 0.3vw !important;
+    text-align: center;
+}
+
+.adminActionButtons button {
+    padding: 0.5vw 1vw;
+    border: none;
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #abbcc8;
+    color: #1c2125;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0.1vw;
+}
+
+.editButton {
+    margin-right: 0.5vw !important;
+}
+
+.backButton {
+    background-color: #ffecc7 !important;
+}
+
+.admin-db-rows.editing .cancelButton {
+    display: none;
+}
+
+.statsSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.statsRow {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.statsBlock {
+    display: flex;
+    background-color: #eeebe5bc;
+    padding: 1vw;
+    flex-grow: 1;
+    margin: 1vw;
+    font-size: 18px;
+    border-radius: 7px;
+    color: #220934;
+}
+
+.statsText {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 50px;
+    color: #04101e;
+    font-weight: 500;
+}
+
+.admin-db-rows input[type="text"] {
+    color: #04101e;
+    border: 1.2px solid #9bd3f3;
+    border-radius: 4px;
+}
+
+.admin-db-rows input[type="text"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
+  }

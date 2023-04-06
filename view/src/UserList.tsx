@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { deleteUser, getUsers, updateUser } from './api';
+import { Container } from 'react-bootstrap';
+import './admin.css';
 
 interface User {
     id: number;
@@ -9,30 +11,40 @@ interface User {
     email: string;
     total_cancelled: number;
     total_completed: number;
+    total_earnings: number;
+    total_cars: number;
 }
 
-function UserList(props: any) {
+interface AdminDashboardProps {
+  setLoggedIn: (loggedIn: boolean) => void;
+}
+
+function UserList(props: any, { setLoggedIn }: AdminDashboardProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [newName, setNewName] = useState('');
   const [newContact, setNewContact] = useState('');
+  const [refresh, setRefresh] = useState(true);
+  const userType = location.pathname === '/admin/customers' ? 'Customers' : 'Owners';
 
   useEffect(() => {
     async function fetchUsers() {
         const user_type = props.userType;
-        const res = await getUsers(user_type) as User[]; // fetch list of users
+        const id = '';
+        const res = await getUsers(user_type, id) as User[]; // fetch list of users
         setUsers(res);
-    }
-    if (!editingUser) { // if editingUser is null
-      fetchUsers();
-    } 
-  }, [props.userType, editingUser]); // refresh upon userType change (and edit)
+    } fetchUsers();
+    setEditingUser(null);
+  }, [props.userType, refresh]); // refresh upon userType change (and edit)
 
   const handleDeleteUser = async (user: User) => {
-    const user_type = props.userType;
-    const id = user.id;
-    await deleteUser(id, user_type); // send DELETE request to API
-    setUsers(users.filter(c => c.id !== user.id)); // remove user from state
+    const isConfirmed = window.confirm("Are you sure you want to delete?");
+    if (isConfirmed) {
+      const user_type = props.userType;
+      const id = user.id;
+      await deleteUser(id, user_type); // send DELETE request to API
+      setUsers(users.filter(c => c.id !== user.id)); // remove user from state
+    }
   };
 
   const handleEditUser = (user: User) => { // select user to be edited
@@ -44,86 +56,102 @@ function UserList(props: any) {
   const handleConfirmEdit = async (user: User) => {
     const user_type = props.userType;
     const id = user.id;
-    /*const updatedUser = {
-      ...user,
-      name: newName,
-      contact: newContact,
-    };*/
     const data = {id, newContact, newName, user_type}
-    await updateUser(data);
-        // TODO: Send PUT request to API to update user info
-    setEditingUser(null); // deselect
+    const isConfirmed = window.confirm("Confirm changes?");
+    if (isConfirmed) {
+      await updateUser(data);
+      setEditingUser(null); // deselect
+      setRefresh(refresh ? false : true);
+    }    
+  };
+
+  const handleClick = () => {
+    setLoggedIn(false);
   };
 
   return (
-    <div>
-      <nav>
-        <ul>
-        <li>
-          <Link to="/">Sign out</Link>
-        </li>
-        <li>
-          <Link to="/admin">Dashboard</Link>
-        </li>
-        <li>
-          <Link to="/admin/customers">Customers</Link>
-        </li>
-        <li>
-          <Link to="/admin/owners">Owners</Link>
-        </li>
-        <li>
-          <Link to="/admin/cars">Cars</Link>
-        </li>
-        </ul>
-      </nav>
-      <h2>User List</h2>
-      <table>
-          <thead>
-              <tr>
-                <th>Name</th>
-                <th>Contact</th>
-                <th>Email</th>
-                <th>Cancelled Rentals</th>
-                <th>Completed Rentals</th>
-                <th>Action</th>
-              </tr>
-          </thead>
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={index}>
-                <td>
-                  {editingUser && editingUser.id === user.id ? (
-                      <input type="text" value={newName} onChange={e => setNewName(e.target.value)} />
-                  ) : (
-                      user.name
-                  )}
-                </td>
-                <td>
-                  {editingUser && editingUser.id === user.id ? (
-                      <input type="text" value={newContact} onChange={e => setNewContact(e.target.value)} />
-                  ) : (
-                      user.contact
-                  )}
-                </td>
-                <td>{user.email}</td>
-                <td>{user.total_cancelled}</td>
-                <td>{user.total_completed}</td>
-                <td>
-                  {editingUser && editingUser.id === user.id ? (
-                    <>
-                    <button onClick={() => handleConfirmEdit(user)}>Confirm</button>
-                    <button onClick={() => setEditingUser(null)}>Cancel</button>
-                    </>
+    <Container className='userListContainer'>
+      <Container className='adminNav'>
+        <nav>
+          <ul>
+          <li>
+            <Link to="/admin/dashboard">Dashboard</Link>
+          </li>
+          <li className={`${props.userType === 'customer' ? 'selected-tab' : ''}`}>
+            <Link className={`${props.userType === 'customer' ? 'no-cursor' : ''}`} to="/admin/customers">Customers</Link>
+          </li>
+          <li className={`${props.userType === 'owner' ? 'selected-tab' : ''}`}>
+            <Link className={`${props.userType === 'owner' ? 'no-cursor' : ''}`} to="/admin/owners">Owners</Link>
+          </li>
+          <li>
+            <Link to="/admin/cars">Cars</Link>
+          </li>
+          <li>
+            <Link to="/admin" onClick={handleClick}>Logout</Link>
+          </li>
+          </ul>
+        </nav>
+      </Container>
+      <Container className='userListArea'>
+        <h2>User List: {userType}</h2>
+        <table className='admin-table'>
+            <thead>
+                <tr className='admin-db-columns'>
+                  <th>Name</th>
+                  <th>Contact</th>
+                  <th>Email</th>
+                  {props.userType === 'owner' && 
+                  <th>Cars Owned</th>
+                  }
+                  <th>Cancelled Rentals</th>
+                  <th>Completed Rentals</th>
+                  {props.userType === 'owner' && 
+                  <th>Total Earnings</th>
+                  }
+                  <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr key={index} className={editingUser && editingUser.id === user.id ? 'admin-db-rows editing' : 'admin-db-rows'}>
+                  <td>
+                    {editingUser && editingUser.id === user.id ? (
+                        <input type="text" size={10} value={newName} onChange={e => setNewName(e.target.value)} />
                     ) : (
-                    <button onClick={() => handleEditUser(user)}>Edit</button>
+                        user.name
                     )}
-                    <button onClick={() => handleDeleteUser(user)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-      </table>
-    </div>
+                  </td>
+                  <td>
+                    {editingUser && editingUser.id === user.id ? (
+                        <input type="text" size={8} value={newContact} onChange={e => setNewContact(e.target.value)} />
+                    ) : (
+                        user.contact
+                    )}
+                  </td>
+                  <td>{user.email}</td>
+                  {props.userType === 'owner' && 
+                  <td>{user.total_cars}</td>}
+                  <td>{user.total_cancelled}</td>
+                  <td>{user.total_completed}</td>
+                  {props.userType === 'owner' && 
+                  <td>{user.total_earnings}</td>}
+                  <td className='adminActionButtons'>
+                    {editingUser && editingUser.id === user.id ? (
+                      <>
+                      <button className="confirmButton" onClick={() => handleConfirmEdit(user)}>Confirm</button>
+                      <button className="backButton" onClick={() => setEditingUser(null)}>Cancel</button>
+                      </>
+                      ) : (
+                      <button className="editButton" onClick={() => handleEditUser(user)}>Edit</button>
+                      )}
+                      <button className="cancelButton" onClick={() => handleDeleteUser(user)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+        </table>
+      </Container>
+    </Container>
   );
 }
 

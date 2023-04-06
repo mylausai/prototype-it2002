@@ -4,32 +4,29 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { Button } from "@chakra-ui/react";
 import { AiFillCar } from "react-icons/ai";
 import { TbMan } from "react-icons/tb";
-
 import './index.css'
-
 
 function HomePage() {
   return (
-    <Container className="home-container">
+    <Container className="homepage-container">
       <div className="home-box">
-      <Row>
-        <Col>
-          <h1 className="home-title">Welcome to Car Rental</h1>
-          <p className="home-subtitle">Are you a customer or an owner?</p>
-        </Col>
-      </Row>
-      <Row style={{ display: "flex", justifyContent: "space-between" }}>
-        <Col xs={6} md={3}>
-          <Link to="/login/customer">
-            <Button leftIcon={<TbMan />} colorScheme='blue' size="lg" mr={5} minW="calc(20vw)" minH="calc(10vw)" fontSize={"2.5vw"}>Customer</Button>
-          </Link>
-        </Col>
-        <Col xs={6} md={3}>
-          <Link to="/login/owner">
-            <Button leftIcon={<AiFillCar />} colorScheme="blue" size="lg" mr={2} minW="calc(20vw)" minH="calc(10vw)" fontSize={"2.5vw"}>Owner</Button>
-          </Link>
-        </Col>
-      </Row>
+        <Row>
+          <Col>
+            <h1 className="home-title">Welcome to Car Rental</h1>
+          </Col>
+        </Row>
+        <Row style={{ display: "flex", justifyContent: "space-between" }}>
+          <Col>
+            <Link to="/login/customer">
+              <Button leftIcon={<TbMan />} color="#eeebe5" backgroundColor={"#174b4d"} _hover={{bg: '#F5DEB3', color: '#000000'}} h="8vw" w="23vw" mr="1.2vw" fontSize={"3vw"}>Customer</Button>
+            </Link>
+          </Col>
+          <Col>
+            <Link to="/login/owner">
+              <Button leftIcon={<AiFillCar />} color="#eeebe5" backgroundColor={"#42174d"} _hover={{bg: '#F5DEB3', color: '#000000'}} h="8vw" w="23vw" fontSize={"3.3vw"}>Owner</Button>
+            </Link>
+          </Col>
+        </Row>
       </div>
     </Container>
   );
