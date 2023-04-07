@@ -5,7 +5,7 @@
   align-items: center;
   text-align: center;
   min-height: 100vh;
-  background-image: url('./images/figma_bg_dark.png');
+  background-image: url('/images/figma_bg_dark.png');
   background-position: center center;
   background-size: cover;
   background-color: #174b4d;

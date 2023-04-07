@@ -159,7 +159,7 @@ def create_owner():
         db.execute(query, {"u":user_id, "e":email, "p":password})
         db.commit()
         query = sqlalchemy.text(
-            "INSERT INTO customers (owner_id, user_id, name, contact, email) "
+            "INSERT INTO owners (owner_id, user_id, name, contact, email) "
             "VALUES (:o, :u, :n, :c, :e)"
             )
         db.execute(query, {"o":owner_id, "u":user_id, "n":name, "c":contact, "e":email})
@@ -203,25 +203,27 @@ def post_cars():
     seatCapacity = data.get('seatCapacity')
     rentalRate = data.get('rentalRate')
     try:
-        # insert
+        # add new car to database
         query = f"SELECT MAX(car_id) from cars"
         car_id = int(db.execute(sqlalchemy.text(query)).fetchone()[0] or 0) + 1
         query = sqlalchemy.text("INSERT INTO cars VALUES (:c, :o, :m, :s, :p, :r, true)")
-        db.execute(query, {"c":car_id, "o":owner_id, "m":makeModel, "s":seatCapacity, "p":pickupLocation, "r":rentalRate })
+        db.execute(query, {"c":car_id, "o":owner_id, "m":makeModel, 
+                           "s":seatCapacity, "p":pickupLocation, "r":rentalRate })
         db.commit()
         return Response(query.text)
     except Exception as e:
         db.rollback()
         return Response(str(e), 403)
     
-@app.post('/api/getcars') #cars of owner
+@app.post('/api/getcars') 
 def get_cars():
     owner_id = request.get_json()
     try:
-        # insert
-        query = sqlalchemy.text("SELECT car_id, make_model, seat_capacity, pickup_location, rental_rate, available "
-                                "FROM cars "
-                                "WHERE owner_id =:o")
+        # retrieve cars of owner
+        query = sqlalchemy.text(
+            "SELECT car_id, make_model, seat_capacity, pickup_location, rental_rate, available "
+            "FROM cars "
+            "WHERE owner_id =:o")
         result = db.execute(query, {"o": owner_id})
         result = wrap_result(result)
         return jsonify(result)
@@ -242,9 +244,11 @@ def rent_cars():
         query = f"SELECT MAX(rental_id) from rental"
         rental_id = int(db.execute(sqlalchemy.text(query)).fetchone()[0] or 0) + 1
         #status is pending by default
-        query = sqlalchemy.text("INSERT INTO rental (rental_id, customer_id, car_id, rental_days, total_cost, pickup_location) "
-                                "VALUES (:r, :cu, :c, :rd, :rc, :p)")
-        db.execute(query, {"r":rental_id, "cu":customer_id, "c":car_id, "rd":rental_days, "rc":rental_cost, "p":pickup_location})
+        query = sqlalchemy.text(
+            "INSERT INTO rental (rental_id, customer_id, car_id, rental_days, total_cost, pickup_location) "
+            "VALUES (:r, :cu, :c, :rd, :rc, :p)")
+        db.execute(query, {"r":rental_id, "cu":customer_id, "c":car_id, 
+                           "rd":rental_days, "rc":rental_cost, "p":pickup_location})
         db.commit()
         # update car availability to false
         query = sqlalchemy.text("UPDATE cars "
@@ -266,22 +270,24 @@ def get_orders():
     try:
         if user_type == 'customer':
             # retrieve rental records for the given customer
-            query = sqlalchemy.text("SELECT r.rental_id, c.make_model, r.pickup_location, r.rental_days, r.total_cost, o.contact, r.status "
-                                    "FROM rental r, cars c, owners o "
-                                    "WHERE c.car_id = r.car_id "
-                                    "AND c.owner_id = o.owner_id "
-                                    "AND r.customer_id = :c "
-                                    "AND r.status = :s")
+            query = sqlalchemy.text(
+                "SELECT r.rental_id, c.make_model, r.pickup_location, r.rental_days, r.total_cost, o.contact, r.status "
+                "FROM rental r, cars c, owners o "
+                "WHERE c.car_id = r.car_id "
+                "AND c.owner_id = o.owner_id "
+                "AND r.customer_id = :c "
+                "AND r.status = :s")
             result = db.execute(query, {"c":user_id, "s":status})
             
         else:
             # retrieve rental records for the given owner
-            query = sqlalchemy.text("SELECT r.rental_id, c.make_model, r.pickup_location, r.rental_days, r.total_cost, cu.contact, r.status "
-                                    "FROM rental r, cars c, customers cu "
-                                    "WHERE c.car_id = r.car_id "
-                                    "AND r.customer_id = cu.customer_id "
-                                    "AND c.owner_id = :o "
-                                    "AND r.status = :s")
+            query = sqlalchemy.text(
+                "SELECT r.rental_id, c.make_model, r.pickup_location, r.rental_days, r.total_cost, cu.contact, r.status "
+                "FROM rental r, cars c, customers cu "
+                "WHERE c.car_id = r.car_id "
+                "AND r.customer_id = cu.customer_id "
+                "AND c.owner_id = :o "
+                "AND r.status = :s")
             result = db.execute(query, {"o":user_id, "s":status})
         result = wrap_result(result)
         return jsonify(result)
@@ -342,6 +348,7 @@ def get_users():
     id = str(data.get("id"))
     try:
         if user_type == 'customer':
+            # list of customers
             query = sqlalchemy.text("SELECT c.customer_id id, c.name, c.contact, c.email, "
                                     "SUM(CASE status WHEN 'cancelled' THEN 1 ELSE 0 END) total_cancelled, "
                                     "SUM(CASE status WHEN 'completed' THEN 1 ELSE 0 END) total_completed "
@@ -350,8 +357,10 @@ def get_users():
                                     "ON r.customer_id = c.customer_id "
                                     "GROUP BY c.customer_id, c.name, c.contact, c.email "
                                     "ORDER BY id")
-        else:
-            query = sqlalchemy.text("SELECT o.owner_id id, o.name, o.contact, o.email, SUM(CASE status WHEN 'cancelled' THEN 1 ELSE 0 END) total_cancelled, "
+        else: 
+            # list of owners
+            query = sqlalchemy.text("SELECT o.owner_id id, o.name, o.contact, o.email, "
+                                    "SUM(CASE status WHEN 'cancelled' THEN 1 ELSE 0 END) total_cancelled, "
                                     "SUM(CASE status WHEN 'completed' THEN 1 ELSE 0 END) total_completed, "
                                     "SUM(CASE status WHEN 'completed' THEN rental_rate ELSE 0 END) total_earnings, "
                                     "COUNT(DISTINCT c.car_id) total_cars "
@@ -404,12 +413,14 @@ def delete_user():
 @app.post('/api/listcars')
 def list_cars():
     try:
-        query = sqlalchemy.text("SELECT c.car_id, c.make_model, c.seat_capacity, c.pickup_location, c.rental_rate, "
-                                "SUM(CASE status WHEN 'completed' THEN 1 ELSE 0 END) total_rental "
-                                "FROM cars c "
-                                "LEFT JOIN rental r "
-                                "ON r.car_id = c.car_id "
-                                "GROUP BY c.car_id, c.make_model, c.seat_capacity, c.pickup_location, c.rental_rate")
+        query = sqlalchemy.text(
+            "SELECT c.car_id, c.make_model, c.seat_capacity, c.pickup_location, c.rental_rate, "
+            "SUM(CASE status WHEN 'completed' THEN 1 ELSE 0 END) total_rental "
+            "FROM cars c "
+            "LEFT JOIN rental r "
+            "ON r.car_id = c.car_id "
+            "GROUP BY c.car_id, c.make_model, c.seat_capacity, c.pickup_location, c.rental_rate"
+            )
         result = db.execute(query)
         result = wrap_result(result)
         return jsonify(result)                       
